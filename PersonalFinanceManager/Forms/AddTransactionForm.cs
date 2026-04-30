@@ -1,4 +1,6 @@
 ﻿using PersonalFinanceManager.Models;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace PersonalFinanceManager.Forms
 {
@@ -9,11 +11,14 @@ namespace PersonalFinanceManager.Forms
         private readonly bool _isEditMode;
         // In edit mode, this holds the transaction being edited. In add mode, it will be null.
         private readonly TransactionListItem? _transactionToEdit;
+        private bool _allowCloseWithoutExit;
 
         public AddTransactionForm()
         {
             InitializeComponent();
             _isEditMode = false;
+            ApplyUiStyling();
+            FormClosing += AddTransactionForm_FormClosing;
         }
 
         public AddTransactionForm(TransactionListItem transactionToEdit)
@@ -22,6 +27,99 @@ namespace PersonalFinanceManager.Forms
             _isEditMode = true;
             // Store the transaction being edited so we can pre-fill the form fields
             _transactionToEdit = transactionToEdit;
+            ApplyUiStyling();
+            FormClosing += AddTransactionForm_FormClosing;
+        }
+
+        private void AddTransactionForm_FormClosing(object? sender, FormClosingEventArgs e)
+        {
+            if (!_allowCloseWithoutExit && e.CloseReason == CloseReason.UserClosing)
+            {
+                Application.Exit();
+                return;
+            }
+
+            _allowCloseWithoutExit = false;
+        }
+
+        private void ApplyUiStyling()
+        {
+            DoubleBuffered = true;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+
+            lblFormTitle.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            lblFormTitle.ForeColor = Color.White;
+            lblFormTitle.BackColor = Color.Transparent;
+            lblFormTitle.BorderStyle = BorderStyle.None;
+
+            var labelFont = new Font("Segoe UI", 10F, FontStyle.Regular);
+            lblType.Font = labelFont;
+            lblType.ForeColor = Color.White;
+            lblType.BackColor = Color.Transparent;
+            lblTitle.Font = labelFont;
+            lblTitle.ForeColor = Color.White;
+            lblTitle.BackColor = Color.Transparent;
+            lblCategory.Font = labelFont;
+            lblCategory.ForeColor = Color.White;
+            lblCategory.BackColor = Color.Transparent;
+            lblAmount.Font = labelFont;
+            lblAmount.ForeColor = Color.White;
+            lblAmount.BackColor = Color.Transparent;
+            lblDate.Font = labelFont;
+            lblDate.ForeColor = Color.White;
+            lblDate.BackColor = Color.Transparent;
+
+            cmbType.Font = new Font("Segoe UI", 10F);
+            cmbType.BackColor = Color.FromArgb(245, 245, 245);
+            txtTitle.Font = new Font("Segoe UI", 10F);
+            txtTitle.BackColor = Color.FromArgb(245, 245, 245);
+            txtCategory.Font = new Font("Segoe UI", 10F);
+            txtCategory.BackColor = Color.FromArgb(245, 245, 245);
+            nudAmount.Font = new Font("Segoe UI", 10F);
+            nudAmount.BackColor = Color.FromArgb(245, 245, 245);
+            dtpDate.Font = new Font("Segoe UI", 10F);
+
+            StylePrimaryButton(btnOk, "OK");
+            StyleSecondaryButton(btnCancel, "Anulează");
+        }
+
+        private static void StylePrimaryButton(Button button, string text)
+        {
+            button.FlatStyle = FlatStyle.Flat;
+            button.FlatAppearance.BorderSize = 0;
+            button.BackColor = Color.FromArgb(0, 120, 215);
+            button.ForeColor = Color.White;
+            button.Font = new Font("Segoe UI Semibold", 10F);
+            button.Text = text;
+        }
+
+        private static void StyleSecondaryButton(Button button, string text)
+        {
+            button.FlatStyle = FlatStyle.Flat;
+            button.FlatAppearance.BorderSize = 1;
+            button.FlatAppearance.BorderColor = Color.FromArgb(0, 120, 215);
+            button.BackColor = Color.White;
+            button.ForeColor = Color.FromArgb(0, 120, 215);
+            button.Font = new Font("Segoe UI Semibold", 10F);
+            button.Text = text;
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            using (LinearGradientBrush brush = new LinearGradientBrush(ClientRectangle, Color.FromArgb(10, 95, 120), Color.FromArgb(2, 128, 144), 45f))
+            {
+                e.Graphics.FillRectangle(brush, ClientRectangle);
+            }
+
+            using (Font f = new Font("Segoe UI", 56, FontStyle.Bold, GraphicsUnit.Pixel))
+            using (SolidBrush sb = new SolidBrush(Color.FromArgb(16, Color.White)))
+            {
+                var text = "Finanțe";
+                var size = e.Graphics.MeasureString(text, f);
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                e.Graphics.DrawString(text, f, sb, new PointF(ClientSize.Width - size.Width - 20, ClientSize.Height - size.Height - 40));
+            }
         }
 
         private void AddTransactionForm_Load(object sender, EventArgs e)
@@ -104,12 +202,14 @@ namespace PersonalFinanceManager.Forms
             };
 
             DialogResult = DialogResult.OK;
+            _allowCloseWithoutExit = true;
             Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
+            _allowCloseWithoutExit = true;
             Close();
         }
     }

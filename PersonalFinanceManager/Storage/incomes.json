@@ -1,0 +1,42 @@
+[
+  {
+    "Id": 1,
+    "UserId": 1,
+    "Title": "Salariu",
+    "Amount": 4500.0,
+    "Date": "2024-10-01T00:00:00",
+    "CategoryId": 1
+  },
+  {
+    "Id": 2,
+    "UserId": 1,
+    "Title": "Bonus proiect",
+    "Amount": 800.0,
+    "Date": "2024-10-15T00:00:00",
+    "CategoryId": 2
+  },
+  {
+    "Id": 3,
+    "UserId": 1,
+    "Title": "Freelance",
+    "Amount": 1200.0,
+    "Date": "2024-10-20T00:00:00",
+    "CategoryId": 2
+  },
+  {
+    "Id": 4,
+    "UserId": 1,
+    "Title": "Al 13-lea salariu",
+    "Amount": 3500.0,
+    "Date": "2024-11-01T00:00:00",
+    "CategoryId": 1
+  },
+  {
+    "Id": 5,
+    "UserId": 1,
+    "Title": "Vânzare online",
+    "Amount": 620.0,
+    "Date": "2024-11-10T00:00:00",
+    "CategoryId": 2
+  }
+]

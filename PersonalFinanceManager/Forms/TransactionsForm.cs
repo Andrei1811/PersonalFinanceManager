@@ -15,6 +15,7 @@ namespace PersonalFinanceManager.Forms
         private bool _sortAscendingByTip = true;
 
         private string _currentSortColumn = "";
+        private bool _allowCloseWithoutExit;
 
         public TransactionsForm()
         {
@@ -40,6 +41,19 @@ namespace PersonalFinanceManager.Forms
             //adaugam event handleri pentru schimbarea textului in filtre, astfel incat sa se aplice filtrele in timp real
             txtFilterTitle.TextChanged += txtFilterTitle_TextChanged;
             txtFilterCategory.TextChanged += txtFilterCategory_TextChanged;
+
+            FormClosing += TransactionsForm_FormClosing;
+        }
+
+        private void TransactionsForm_FormClosing(object? sender, FormClosingEventArgs e)
+        {
+            if (!_allowCloseWithoutExit && e.CloseReason == CloseReason.UserClosing)
+            {
+                Application.Exit();
+                return;
+            }
+
+            _allowCloseWithoutExit = false;
         }
 
         //cere tranzactii de la transactionservices
@@ -338,6 +352,7 @@ namespace PersonalFinanceManager.Forms
                 loginForm.ActiveControl = loginForm.Controls["txtLoginUsername"];
             }
 
+            _allowCloseWithoutExit = true;
             this.Close();
         }
     }
