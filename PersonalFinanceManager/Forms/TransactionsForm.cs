@@ -1,5 +1,7 @@
 ﻿using PersonalFinanceManager.Models;
 using PersonalFinanceManager.Services;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace PersonalFinanceManager.Forms
@@ -16,11 +18,14 @@ namespace PersonalFinanceManager.Forms
 
         private string _currentSortColumn = "";
         private bool _allowCloseWithoutExit;
+        private Image? _backgroundImage;
 
         public TransactionsForm()
         {
             //construim interfata, initializam serviciul de tranzactii, incarcam datele reale in lista si apoi le afisam in grid
             InitializeComponent();
+
+            ApplyUiStyling();
 
             if (SessionManager.CurrentUser != null)
             {
@@ -43,6 +48,85 @@ namespace PersonalFinanceManager.Forms
             txtFilterCategory.TextChanged += txtFilterCategory_TextChanged;
 
             FormClosing += TransactionsForm_FormClosing;
+            Resize += TransactionsForm_Resize;
+        }
+
+        private void ApplyUiStyling()
+        {
+            DoubleBuffered = true;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            BackColor = Color.FromArgb(10, 95, 120);
+            SetBackgroundImage();
+
+            lblTitle.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold, GraphicsUnit.Point);
+            lblTitle.ForeColor = Color.White;
+            lblTitle.BackColor = Color.Transparent;
+
+            lblFilterTitle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            lblFilterTitle.ForeColor = Color.White;
+            lblFilterTitle.BackColor = Color.Transparent;
+
+            lblFilterCategory.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            lblFilterCategory.ForeColor = Color.White;
+            lblFilterCategory.BackColor = Color.Transparent;
+
+            lblCurrentUser.ForeColor = Color.White;
+            lblCurrentUser.BackColor = Color.Transparent;
+            lblTotalIncome.ForeColor = Color.White;
+            lblTotalIncome.BackColor = Color.Transparent;
+            lblTotalExpense.ForeColor = Color.White;
+            lblTotalExpense.BackColor = Color.Transparent;
+            lblBalance.ForeColor = Color.White;
+            lblBalance.BackColor = Color.Transparent;
+
+            label1.Visible = false;
+            label2.Visible = false;
+
+            txtFilterTitle.Font = new Font("Segoe UI", 10F);
+            txtFilterTitle.BackColor = Color.FromArgb(245, 245, 245);
+            txtFilterTitle.BorderStyle = BorderStyle.FixedSingle;
+
+            txtFilterCategory.Font = new Font("Segoe UI", 10F);
+            txtFilterCategory.BackColor = Color.FromArgb(245, 245, 245);
+            txtFilterCategory.BorderStyle = BorderStyle.FixedSingle;
+
+            StylePrimaryButton(btnAddTransaction, "Adaugă");
+            StylePrimaryButton(btnDeleteTransaction, "Șterge");
+            StylePrimaryButton(btnEditTransaction, "Editează");
+            StylePrimaryButton(btnLogout, "Logout");
+
+            btnSortById.FlatStyle = FlatStyle.Flat;
+            btnSortById.FlatAppearance.BorderSize = 0;
+            btnSortById.BackColor = Color.FromArgb(0, 120, 215);
+            btnSortById.ForeColor = Color.White;
+            btnSortById.Font = new Font("Segoe UI Semibold", 10F);
+
+            dgvTransactions.BackgroundColor = Color.White;
+            dgvTransactions.GridColor = Color.FromArgb(230, 230, 230);
+            dgvTransactions.BorderStyle = BorderStyle.None;
+            dgvTransactions.EnableHeadersVisualStyles = false;
+            dgvTransactions.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(0, 120, 215);
+            dgvTransactions.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvTransactions.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10F);
+            dgvTransactions.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgvTransactions.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 120, 215);
+            dgvTransactions.DefaultCellStyle.SelectionForeColor = Color.White;
+        }
+
+        private static void StylePrimaryButton(Button button, string text)
+        {
+            button.FlatStyle = FlatStyle.Flat;
+            button.FlatAppearance.BorderSize = 0;
+            button.BackColor = Color.FromArgb(0, 120, 215);
+            button.ForeColor = Color.White;
+            button.Font = new Font("Segoe UI Semibold", 10F);
+            button.Text = text;
+        }
+
+        private void TransactionsForm_Resize(object? sender, EventArgs e)
+        {
+            SetBackgroundImage();
         }
 
         private void TransactionsForm_FormClosing(object? sender, FormClosingEventArgs e)
@@ -54,6 +138,12 @@ namespace PersonalFinanceManager.Forms
             }
 
             _allowCloseWithoutExit = false;
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            _backgroundImage?.Dispose();
+            base.OnFormClosed(e);
         }
 
         //cere tranzactii de la transactionservices
@@ -354,6 +444,36 @@ namespace PersonalFinanceManager.Forms
 
             _allowCloseWithoutExit = true;
             this.Close();
+        }
+
+        private void SetBackgroundImage()
+        {
+            if (ClientSize.Width <= 0 || ClientSize.Height <= 0)
+            {
+                return;
+            }
+
+            _backgroundImage?.Dispose();
+
+            Bitmap bitmap = new Bitmap(ClientSize.Width, ClientSize.Height);
+            using (Graphics graphics = Graphics.FromImage(bitmap))
+            using (LinearGradientBrush brush = new LinearGradientBrush(ClientRectangle, Color.FromArgb(10, 95, 120), Color.FromArgb(2, 128, 144), 45f))
+            {
+                graphics.FillRectangle(brush, ClientRectangle);
+
+                using (Font f = new Font("Segoe UI", 72, FontStyle.Bold, GraphicsUnit.Pixel))
+                using (SolidBrush sb = new SolidBrush(Color.FromArgb(18, Color.White)))
+                {
+                    var text = "Finanțe";
+                    var size = graphics.MeasureString(text, f);
+                    graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                    graphics.DrawString(text, f, sb, new PointF(ClientSize.Width - size.Width - 20, ClientSize.Height - size.Height - 60));
+                }
+            }
+
+            _backgroundImage = bitmap;
+            BackgroundImage = _backgroundImage;
+            BackgroundImageLayout = ImageLayout.Stretch;
         }
     }
 }
