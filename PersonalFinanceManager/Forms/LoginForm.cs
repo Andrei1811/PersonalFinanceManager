@@ -21,61 +21,74 @@ namespace PersonalFinanceManager.Forms
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
 
-            // Panel styling - REDUS
-            pnlRegister.BackColor = Color.FromArgb(255, 255, 255);
-            pnlRegister.Padding = new Padding(24);
-            pnlRegister.BorderStyle = BorderStyle.None;
-            pnlRegister.Size = new Size(370, 290);
-            pnlRegister.Location = new Point((this.ClientSize.Width - pnlRegister.Width) / 2, (this.ClientSize.Height - pnlRegister.Height) / 2);
+            // Eliminare panel, plasare controale direct pe formular
+            this.Controls.Remove(pnlRegister);
+            this.Controls.Add(lblLoginTitle);
+            this.Controls.Add(label3);
+            this.Controls.Add(txtLoginUsername);
+            this.Controls.Add(label4);
+            this.Controls.Add(txtLoginPassword);
+            this.Controls.Add(btnLogin);
+            this.Controls.Add(btnOpenRegister);
 
-            // Title
-            lblLoginTitle.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold, GraphicsUnit.Point);
-            lblLoginTitle.ForeColor = Color.FromArgb(30, 30, 30);
-            lblLoginTitle.Location = new Point(24, 8);
+            // Poziționare și stilizare direct pe formular
+            int formWidth = this.ClientSize.Width;
+            int centerX = formWidth / 2;
+            int y = 60;
 
-            // Username label & textbox
-            label3.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
-            label3.Location = new Point(24, 60);
+            lblLoginTitle.Font = new Font("Segoe UI Semibold", 26F, FontStyle.Bold, GraphicsUnit.Point);
+            lblLoginTitle.ForeColor = Color.White;
+            lblLoginTitle.BackColor = Color.Transparent;
+            lblLoginTitle.AutoSize = true;
+            lblLoginTitle.Location = new Point(centerX - 170, y);
+            y += 70;
+
+            label3.Font = new Font("Segoe UI", 11F, FontStyle.Regular);
+            label3.ForeColor = Color.White;
+            label3.BackColor = Color.Transparent;
             label3.Size = new Size(320, 22);
-            label3.TextAlign = ContentAlignment.BottomLeft;
+            label3.Location = new Point(centerX - 160, y);
+            y += 28;
 
-            txtLoginUsername.Font = new Font("Segoe UI", 11F);
+            txtLoginUsername.Font = new Font("Segoe UI", 12F);
             txtLoginUsername.BackColor = Color.FromArgb(245, 245, 245);
             txtLoginUsername.BorderStyle = BorderStyle.FixedSingle;
-            txtLoginUsername.Size = new Size(320, 30);
-            txtLoginUsername.Location = new Point(24, 82);
+            txtLoginUsername.Size = new Size(320, 32);
+            txtLoginUsername.Location = new Point(centerX - 160, y);
+            y += 48;
 
-            // Password label & textbox
-            label4.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
-            label4.Location = new Point(24, 122);
+            label4.Font = new Font("Segoe UI", 11F, FontStyle.Regular);
+            label4.ForeColor = Color.White;
+            label4.BackColor = Color.Transparent;
             label4.Size = new Size(320, 22);
-            label4.TextAlign = ContentAlignment.BottomLeft;
+            label4.Location = new Point(centerX - 160, y);
+            y += 28;
 
-            txtLoginPassword.Font = new Font("Segoe UI", 11F);
+            txtLoginPassword.Font = new Font("Segoe UI", 12F);
             txtLoginPassword.BackColor = Color.FromArgb(245, 245, 245);
             txtLoginPassword.BorderStyle = BorderStyle.FixedSingle;
-            txtLoginPassword.Size = new Size(320, 30);
-            txtLoginPassword.Location = new Point(24, 144);
+            txtLoginPassword.Size = new Size(320, 32);
+            txtLoginPassword.Location = new Point(centerX - 160, y);
+            y += 56;
 
-            // Buttons
             btnLogin.FlatStyle = FlatStyle.Flat;
             btnLogin.FlatAppearance.BorderSize = 0;
             btnLogin.BackColor = Color.FromArgb(0, 120, 215);
             btnLogin.ForeColor = Color.White;
-            btnLogin.Font = new Font("Segoe UI Semibold", 10F);
-            btnLogin.Size = new Size(140, 36);
-            btnLogin.Location = new Point(24, 200);
+            btnLogin.Font = new Font("Segoe UI Semibold", 11F);
+            btnLogin.Size = new Size(140, 38);
+            btnLogin.Location = new Point(centerX - 160, y);
+            btnLogin.Text = "Conectare";
 
             btnOpenRegister.FlatStyle = FlatStyle.Flat;
             btnOpenRegister.FlatAppearance.BorderSize = 1;
             btnOpenRegister.FlatAppearance.BorderColor = Color.FromArgb(0, 120, 215);
             btnOpenRegister.BackColor = Color.White;
             btnOpenRegister.ForeColor = Color.FromArgb(0, 120, 215);
-            btnOpenRegister.Font = new Font("Segoe UI Semibold", 10F);
-            btnOpenRegister.Size = new Size(140, 36);
-            btnOpenRegister.Location = new Point(204, 200);
+            btnOpenRegister.Font = new Font("Segoe UI Semibold", 11F);
+            btnOpenRegister.Size = new Size(140, 38);
+            btnOpenRegister.Location = new Point(centerX + 40, y);
             btnOpenRegister.Text = "Înregistrare";
-            btnLogin.Text = "Conectare";
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
