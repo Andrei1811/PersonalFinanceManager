@@ -44,6 +44,7 @@
             lblTotalIncome = new Label();
             lblTotalExpense = new Label();
             lblBalance = new Label();
+            btnOpenDashboard = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvTransactions).BeginInit();
             SuspendLayout();
             // 
@@ -96,15 +97,13 @@
             dgvTransactions.EditMode = DataGridViewEditMode.EditOnF2;
             dgvTransactions.Location = new Point(112, 131);
             dgvTransactions.Name = "dgvTransactions";
-            dgvTransactions.RowHeadersWidth = 51;
-            dgvTransactions.RowTemplate.Height = 29;
-            dgvTransactions.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvTransactions.ReadOnly = true;
+            dgvTransactions.RowHeadersWidth = 51;
+            dgvTransactions.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvTransactions.Size = new Size(718, 361);
             dgvTransactions.TabIndex = 6;
             dgvTransactions.CellClick += dgvTransactions_CellClick;
             dgvTransactions.CellContentClick += dgvTransactions_CellContentClick;
-            
             // 
             // btnAddTransaction
             // 
@@ -201,11 +200,22 @@
             lblBalance.TabIndex = 16;
             lblBalance.Text = "Sold: 0";
             // 
+            // btnOpenDashboard
+            // 
+            btnOpenDashboard.Location = new Point(856, 317);
+            btnOpenDashboard.Name = "btnOpenDashboard";
+            btnOpenDashboard.Size = new Size(94, 29);
+            btnOpenDashboard.TabIndex = 17;
+            btnOpenDashboard.Text = "Dashboard";
+            btnOpenDashboard.UseVisualStyleBackColor = true;
+            btnOpenDashboard.Click += btnOpenDashboard_Click;
+            // 
             // TransactionsForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(982, 553);
+            Controls.Add(btnOpenDashboard);
             Controls.Add(lblBalance);
             Controls.Add(lblTotalExpense);
             Controls.Add(lblTotalIncome);
@@ -248,5 +258,6 @@
         private Label lblTotalIncome;
         private Label lblTotalExpense;
         private Label lblBalance;
+        private Button btnOpenDashboard;
     }
 }

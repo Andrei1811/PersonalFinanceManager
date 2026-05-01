@@ -42,7 +42,7 @@ namespace PersonalFinanceManager.Forms
             LoadRealTransactions();
             //dupa ce am incarcat datele reale, le afisam in grid
             RefreshGrid();
-            
+
             //adaugam event handleri pentru schimbarea textului in filtre, astfel incat sa se aplice filtrele in timp real
             txtFilterTitle.TextChanged += txtFilterTitle_TextChanged;
             txtFilterCategory.TextChanged += txtFilterCategory_TextChanged;
@@ -94,9 +94,12 @@ namespace PersonalFinanceManager.Forms
             StylePrimaryButton(btnAddTransaction, "Adaugă");
             StylePrimaryButton(btnDeleteTransaction, "Șterge");
             StylePrimaryButton(btnEditTransaction, "Editează");
+            StylePrimaryButton(btnOpenDashboard, "Dashboard");
             StylePrimaryButton(btnLogout, "Logout");
 
-            
+            btnOpenDashboard.Size = new Size(120, btnOpenDashboard.Height);
+
+
 
             dgvTransactions.BackgroundColor = Color.White;
             dgvTransactions.GridColor = Color.FromArgb(230, 230, 230);
@@ -286,7 +289,7 @@ namespace PersonalFinanceManager.Forms
 
 
 
-        
+
 
         //logica pentru adaugare tranzactie: deschide un form de adaugare, iar daca utilizatorul a adaugat ceva, se apeleaza serviciul de tranzactii pentru a salva in baza de date, apoi se reincarca lista reala si se refresh-uieste grid-ul
         private void btnAddTransaction_Click(object sender, EventArgs e)
@@ -305,7 +308,7 @@ namespace PersonalFinanceManager.Forms
                 {
                     LoadRealTransactions();
                     RefreshGrid();
-                    
+
                 }
             }
         }
@@ -346,7 +349,7 @@ namespace PersonalFinanceManager.Forms
             {
                 LoadRealTransactions();
                 RefreshGrid();
-                
+
             }
         }
 
@@ -385,7 +388,7 @@ namespace PersonalFinanceManager.Forms
                 {
                     LoadRealTransactions();
                     RefreshGrid();
-                    
+
                 }
             }
         }
@@ -446,6 +449,12 @@ namespace PersonalFinanceManager.Forms
             _backgroundImage = bitmap;
             BackgroundImage = _backgroundImage;
             BackgroundImageLayout = ImageLayout.Stretch;
+        }
+
+        private void btnOpenDashboard_Click(object sender, EventArgs e)
+        {
+            CategoryDashboardForm dashboardForm = new CategoryDashboardForm(_transactions);
+            dashboardForm.ShowDialog();
         }
     }
 }
