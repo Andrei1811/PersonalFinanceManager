@@ -13,11 +13,16 @@ namespace PersonalFinanceManager.Data
 
         public JsonDataService()
         {
-            _dataFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Storage");
+            string projectFolder = Path.GetFullPath(
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\"));
+
+            _dataFolder = Path.Combine(projectFolder, "Storage");
+
             _usersFile = Path.Combine(_dataFolder, "users.json");
             _categoriesFile = Path.Combine(_dataFolder, "categories.json");
             _incomesFile = Path.Combine(_dataFolder, "incomes.json");
             _expensesFile = Path.Combine(_dataFolder, "expenses.json");
+            
 
             CreateFilesIfNeeded();
         }

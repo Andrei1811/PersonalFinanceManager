@@ -38,5 +38,21 @@
     "Amount": 620.0,
     "Date": "2024-11-10T00:00:00",
     "CategoryId": 2
+  },
+  {
+    "Id": 6,
+    "UserId": 2,
+    "Title": "Salariu",
+    "Amount": 5500,
+    "Date": "2026-05-01T00:00:00",
+    "CategoryId": 1
+  },
+  {
+    "Id": 7,
+    "UserId": 2,
+    "Title": "Bursa",
+    "Amount": 1000,
+    "Date": "2026-04-02T00:00:00",
+    "CategoryId": 2
   }
 ]

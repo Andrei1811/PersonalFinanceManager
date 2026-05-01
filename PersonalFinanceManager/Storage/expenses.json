@@ -38,5 +38,29 @@
     "Amount": 55.0,
     "Date": "2024-10-22T00:00:00",
     "CategoryId": 4
+  },
+  {
+    "Id": 6,
+    "UserId": 2,
+    "Title": "Chirie",
+    "Amount": 2000,
+    "Date": "2026-05-13T00:00:00",
+    "CategoryId": 4
+  },
+  {
+    "Id": 7,
+    "UserId": 2,
+    "Title": "Mancare",
+    "Amount": 500,
+    "Date": "2026-05-01T00:00:00",
+    "CategoryId": 3
+  },
+  {
+    "Id": 8,
+    "UserId": 2,
+    "Title": "Uber",
+    "Amount": 50,
+    "Date": "2026-05-01T00:00:00",
+    "CategoryId": 5
   }
 ]

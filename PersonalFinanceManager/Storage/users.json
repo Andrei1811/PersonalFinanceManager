@@ -4,5 +4,11 @@
     "FullName": "User A",
     "Username": "a",
     "Password": "a"
+  },
+  {
+    "Id": 2,
+    "FullName": "Andrei Raulea",
+    "Username": "Andrew",
+    "Password": "Andy05ro"
   }
 ]
