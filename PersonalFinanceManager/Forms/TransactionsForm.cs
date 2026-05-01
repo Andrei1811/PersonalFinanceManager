@@ -96,11 +96,7 @@ namespace PersonalFinanceManager.Forms
             StylePrimaryButton(btnEditTransaction, "Editează");
             StylePrimaryButton(btnLogout, "Logout");
 
-            btnSortById.FlatStyle = FlatStyle.Flat;
-            btnSortById.FlatAppearance.BorderSize = 0;
-            btnSortById.BackColor = Color.FromArgb(0, 120, 215);
-            btnSortById.ForeColor = Color.White;
-            btnSortById.Font = new Font("Segoe UI Semibold", 10F);
+            
 
             dgvTransactions.BackgroundColor = Color.White;
             dgvTransactions.GridColor = Color.FromArgb(230, 230, 230);
@@ -288,33 +284,9 @@ namespace PersonalFinanceManager.Forms
             }
         }
 
-        private void btnSortById_Click(object sender, EventArgs e)
-        {
-            _sortAscendingByID = !_sortAscendingByID;
-            _currentSortColumn = "ID";
 
-            if (_sortAscendingByID)
-                btnSortById.Text = ">";
-            else
-                btnSortById.Text = "<";
 
-            RefreshGrid();
-        }
-
-        private void btnSortById_Click_1(object sender, EventArgs e)
-        {
-        }
-
-        private void dgvTransactions_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0)
-                return;
-
-            DataGridView dgv = (DataGridView)sender;
-
-            dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
-            dgv.BeginEdit(true);
-        }
+        
 
         //logica pentru adaugare tranzactie: deschide un form de adaugare, iar daca utilizatorul a adaugat ceva, se apeleaza serviciul de tranzactii pentru a salva in baza de date, apoi se reincarca lista reala si se refresh-uieste grid-ul
         private void btnAddTransaction_Click(object sender, EventArgs e)

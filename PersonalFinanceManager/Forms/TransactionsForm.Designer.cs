@@ -41,7 +41,6 @@
             lblCurrentUser = new Label();
             label2 = new Label();
             label1 = new Label();
-            btnSortById = new Button();
             lblTotalIncome = new Label();
             lblTotalExpense = new Label();
             lblBalance = new Label();
@@ -100,11 +99,12 @@
             dgvTransactions.RowHeadersWidth = 51;
             dgvTransactions.RowTemplate.Height = 29;
             dgvTransactions.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvTransactions.ReadOnly = true;
             dgvTransactions.Size = new Size(718, 361);
             dgvTransactions.TabIndex = 6;
             dgvTransactions.CellClick += dgvTransactions_CellClick;
             dgvTransactions.CellContentClick += dgvTransactions_CellContentClick;
-            dgvTransactions.CellDoubleClick += dgvTransactions_CellDoubleClick;
+            
             // 
             // btnAddTransaction
             // 
@@ -174,16 +174,6 @@
             label1.TabIndex = 7;
             label1.Text = "label1";
             // 
-            // btnSortById
-            // 
-            btnSortById.Location = new Point(670, 82);
-            btnSortById.Name = "btnSortById";
-            btnSortById.Size = new Size(94, 29);
-            btnSortById.TabIndex = 5;
-            btnSortById.Text = ">";
-            btnSortById.UseVisualStyleBackColor = true;
-            btnSortById.Click += btnSortById_Click_1;
-            // 
             // lblTotalIncome
             // 
             lblTotalIncome.AutoSize = true;
@@ -227,7 +217,6 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(dgvTransactions);
-            Controls.Add(btnSortById);
             Controls.Add(txtFilterCategory);
             Controls.Add(lblFilterCategory);
             Controls.Add(txtFilterTitle);
@@ -256,7 +245,6 @@
         private Label lblCurrentUser;
         private Label label2;
         private Label label1;
-        private Button btnSortById;
         private Label lblTotalIncome;
         private Label lblTotalExpense;
         private Label lblBalance;

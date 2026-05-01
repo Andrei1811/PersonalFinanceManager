@@ -10,7 +10,7 @@ namespace PersonalFinanceManager.Forms
     public partial class LoginForm : Form
     {
         private readonly AuthService _authService;
-        private bool _allowCloseWithoutExit;
+        
 
         public LoginForm()
         {
