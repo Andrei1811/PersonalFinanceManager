@@ -11,12 +11,12 @@
   },
   {
     "Id": 3,
-    "Name": "Mâncare",
+    "Name": "Mancare",
     "Type": "Expense"
   },
   {
     "Id": 4,
-    "Name": "Utilit??i",
+    "Name": "Utilitati",
     "Type": "Expense"
   },
   {
