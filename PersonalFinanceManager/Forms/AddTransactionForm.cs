@@ -11,14 +11,14 @@ namespace PersonalFinanceManager.Forms
         private readonly bool _isEditMode;
         // In edit mode, this holds the transaction being edited. In add mode, it will be null.
         private readonly TransactionListItem? _transactionToEdit;
-        private bool _allowCloseWithoutExit;
+        
 
         public AddTransactionForm()
         {
             InitializeComponent();
             _isEditMode = false;
             ApplyUiStyling();
-            FormClosing += AddTransactionForm_FormClosing;
+            
         }
 
         public AddTransactionForm(TransactionListItem transactionToEdit)
@@ -28,19 +28,10 @@ namespace PersonalFinanceManager.Forms
             // Store the transaction being edited so we can pre-fill the form fields
             _transactionToEdit = transactionToEdit;
             ApplyUiStyling();
-            FormClosing += AddTransactionForm_FormClosing;
+            
         }
 
-        private void AddTransactionForm_FormClosing(object? sender, FormClosingEventArgs e)
-        {
-            if (!_allowCloseWithoutExit && e.CloseReason == CloseReason.UserClosing)
-            {
-                Application.Exit();
-                return;
-            }
-
-            _allowCloseWithoutExit = false;
-        }
+        
 
         private void ApplyUiStyling()
         {
@@ -202,14 +193,14 @@ namespace PersonalFinanceManager.Forms
             };
 
             DialogResult = DialogResult.OK;
-            _allowCloseWithoutExit = true;
+            
             Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
-            _allowCloseWithoutExit = true;
+            
             Close();
         }
     }
