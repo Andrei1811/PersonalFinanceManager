@@ -42,6 +42,7 @@
             dtpEndDate = new DateTimePicker();
             btnApplyDateFilter = new Button();
             btnResetDashboardFilters = new Button();
+            btnExportCsv = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvCategorySummary).BeginInit();
             SuspendLayout();
             // 
@@ -172,11 +173,22 @@
             btnResetDashboardFilters.UseVisualStyleBackColor = true;
             btnResetDashboardFilters.Click += btnResetDashboardFilters_Click;
             // 
+            // btnExportCsv
+            // 
+            btnExportCsv.Location = new Point(665, 67);
+            btnExportCsv.Name = "btnExportCsv";
+            btnExportCsv.Size = new Size(94, 29);
+            btnExportCsv.TabIndex = 14;
+            btnExportCsv.Text = "Export CSV";
+            btnExportCsv.UseVisualStyleBackColor = true;
+            btnExportCsv.Click += btnExportCsv_Click;
+            // 
             // CategoryDashboardForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnExportCsv);
             Controls.Add(btnResetDashboardFilters);
             Controls.Add(btnApplyDateFilter);
             Controls.Add(dtpEndDate);
@@ -214,5 +226,6 @@
         private DateTimePicker dtpEndDate;
         private Button btnApplyDateFilter;
         private Button btnResetDashboardFilters;
+        private Button btnExportCsv;
     }
 }

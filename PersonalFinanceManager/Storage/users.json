@@ -10,5 +10,11 @@
     "FullName": "Andrei Raulea",
     "Username": "Andrew",
     "Password": "Andy05ro"
+  },
+  {
+    "Id": 3,
+    "FullName": "test final",
+    "Username": "final",
+    "Password": "final"
   }
 ]

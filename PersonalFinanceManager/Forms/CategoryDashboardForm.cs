@@ -258,6 +258,54 @@ namespace PersonalFinanceManager.Forms
             LoadCategorySummary();
             LoadDashboardTotals();
         }
+
+        private void btnExportCsv_Click(object sender, EventArgs e)
+        {
+            List<TransactionListItem> filteredTransactions = GetFilteredTransactions();
+
+            var summary = filteredTransactions
+                .GroupBy(x => new { x.Type, x.Category })
+                .Select(g => new
+                {
+                    Tip = g.Key.Type,
+                    Categorie = g.Key.Category,
+                    Total = g.Sum(x => x.Amount)
+                })
+                .OrderBy(x => x.Tip)
+                .ThenBy(x => x.Categorie)
+                .ToList();
+
+            if (summary.Count == 0)
+            {
+                MessageBox.Show("Nu există date de exportat.");
+                return;
+            }
+
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "CSV files (*.csv)|*.csv";
+                saveFileDialog.Title = "Salvează raportul CSV";
+                saveFileDialog.FileName = "raport_categorii.csv";
+
+                if (saveFileDialog.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+
+                List<string> lines = new List<string>();
+
+                lines.Add("Tip,Categorie,Total");
+
+                foreach (var item in summary)
+                {
+                    lines.Add($"{item.Tip},{item.Categorie},{item.Total}");
+                }
+
+                File.WriteAllLines(saveFileDialog.FileName, lines);
+
+                MessageBox.Show("Raportul a fost exportat cu succes.");
+            }
+        }
     }
 
 
