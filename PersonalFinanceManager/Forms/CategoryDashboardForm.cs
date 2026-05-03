@@ -84,6 +84,7 @@ namespace PersonalFinanceManager.Forms
 
             StylePrimaryButton(btnApplyDateFilter, "Aplică perioada");
             StylePrimaryButton(btnResetDashboardFilters, "Reset filtre");
+            StylePrimaryButton(btnExportCsv, "Export CSV");
 
             dgvCategorySummary.BackgroundColor = Color.White;
             dgvCategorySummary.GridColor = Color.FromArgb(230, 230, 230);

@@ -177,7 +177,7 @@
             // 
             btnExportCsv.Location = new Point(665, 67);
             btnExportCsv.Name = "btnExportCsv";
-            btnExportCsv.Size = new Size(94, 29);
+            btnExportCsv.Size = new Size(123, 29);
             btnExportCsv.TabIndex = 14;
             btnExportCsv.Text = "Export CSV";
             btnExportCsv.UseVisualStyleBackColor = true;

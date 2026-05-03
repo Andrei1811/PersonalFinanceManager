@@ -34,13 +34,13 @@
             lblTitle = new Label();
             txtTitle = new TextBox();
             lblCategory = new Label();
-            txtCategory = new TextBox();
             lblAmount = new Label();
             nudAmount = new NumericUpDown();
             lblDate = new Label();
             dtpDate = new DateTimePicker();
             btnOk = new Button();
             btnCancel = new Button();
+            cmbCategory = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)nudAmount).BeginInit();
             SuspendLayout();
             // 
@@ -72,6 +72,7 @@
             cmbType.Name = "cmbType";
             cmbType.Size = new Size(223, 28);
             cmbType.TabIndex = 2;
+            cmbType.SelectedIndexChanged += cmbType_SelectedIndexChanged;
             // 
             // lblTitle
             // 
@@ -97,13 +98,6 @@
             lblCategory.Size = new Size(74, 20);
             lblCategory.TabIndex = 5;
             lblCategory.Text = "Categorie";
-            // 
-            // txtCategory
-            // 
-            txtCategory.Location = new Point(98, 127);
-            txtCategory.Name = "txtCategory";
-            txtCategory.Size = new Size(151, 27);
-            txtCategory.TabIndex = 6;
             // 
             // lblAmount
             // 
@@ -159,18 +153,27 @@
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
             // 
+            // cmbCategory
+            // 
+            cmbCategory.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbCategory.FormattingEnabled = true;
+            cmbCategory.Location = new Point(99, 126);
+            cmbCategory.Name = "cmbCategory";
+            cmbCategory.Size = new Size(150, 28);
+            cmbCategory.TabIndex = 13;
+            // 
             // AddTransactionForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(400, 321);
+            Controls.Add(cmbCategory);
             Controls.Add(btnCancel);
             Controls.Add(btnOk);
             Controls.Add(dtpDate);
             Controls.Add(lblDate);
             Controls.Add(nudAmount);
             Controls.Add(lblAmount);
-            Controls.Add(txtCategory);
             Controls.Add(lblCategory);
             Controls.Add(txtTitle);
             Controls.Add(lblTitle);
@@ -193,12 +196,12 @@
         private Label lblTitle;
         private TextBox txtTitle;
         private Label lblCategory;
-        private TextBox txtCategory;
         private Label lblAmount;
         private NumericUpDown nudAmount;
         private Label lblDate;
         private DateTimePicker dtpDate;
         private Button btnOk;
         private Button btnCancel;
+        private ComboBox cmbCategory;
     }
 }

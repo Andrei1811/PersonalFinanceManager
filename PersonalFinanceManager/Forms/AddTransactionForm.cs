@@ -1,6 +1,7 @@
 ﻿using PersonalFinanceManager.Models;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using PersonalFinanceManager.Data;
 
 namespace PersonalFinanceManager.Forms
 {
@@ -11,11 +12,14 @@ namespace PersonalFinanceManager.Forms
         private readonly bool _isEditMode;
         // In edit mode, this holds the transaction being edited. In add mode, it will be null.
         private readonly TransactionListItem? _transactionToEdit;
-        
+        private readonly JsonDataService _dataService;
+        private List<Category> _categories = new List<Category>();
+
 
         public AddTransactionForm()
         {
             InitializeComponent();
+            _dataService = new JsonDataService();
             _isEditMode = false;
             ApplyUiStyling();
             
@@ -24,6 +28,7 @@ namespace PersonalFinanceManager.Forms
         public AddTransactionForm(TransactionListItem transactionToEdit)
         {
             InitializeComponent();
+            _dataService = new JsonDataService();
             _isEditMode = true;
             // Store the transaction being edited so we can pre-fill the form fields
             _transactionToEdit = transactionToEdit;
@@ -65,8 +70,6 @@ namespace PersonalFinanceManager.Forms
             cmbType.BackColor = Color.FromArgb(245, 245, 245);
             txtTitle.Font = new Font("Segoe UI", 10F);
             txtTitle.BackColor = Color.FromArgb(245, 245, 245);
-            txtCategory.Font = new Font("Segoe UI", 10F);
-            txtCategory.BackColor = Color.FromArgb(245, 245, 245);
             nudAmount.Font = new Font("Segoe UI", 10F);
             nudAmount.BackColor = Color.FromArgb(245, 245, 245);
             dtpDate.Font = new Font("Segoe UI", 10F);
@@ -118,6 +121,7 @@ namespace PersonalFinanceManager.Forms
             cmbType.Items.Clear();
             cmbType.Items.Add("Income");
             cmbType.Items.Add("Expense");
+            _categories = _dataService.LoadCategories();
 
             if (_isEditMode && _transactionToEdit != null)
             {
@@ -128,7 +132,8 @@ namespace PersonalFinanceManager.Forms
                 cmbType.Enabled = false;
 
                 txtTitle.Text = _transactionToEdit.Title;
-                txtCategory.Text = _transactionToEdit.Category;
+                LoadCategoriesForSelectedType();
+                cmbCategory.SelectedItem = _transactionToEdit.Category;
                 nudAmount.Value = _transactionToEdit.Amount;
                 dtpDate.Value = DateTime.Parse(_transactionToEdit.Date);
             }
@@ -142,6 +147,7 @@ namespace PersonalFinanceManager.Forms
                 if (cmbType.Items.Count > 0)
                 {
                     cmbType.SelectedIndex = 0;
+                    LoadCategoriesForSelectedType();
                 }
 
                 nudAmount.Value = 0;
@@ -156,8 +162,7 @@ namespace PersonalFinanceManager.Forms
                 MessageBox.Show("Titlul este obligatoriu.");
                 return;
             }
-
-            if (string.IsNullOrWhiteSpace(txtCategory.Text))
+            if (cmbCategory.SelectedItem == null)
             {
                 MessageBox.Show("Categoria este obligatorie.");
                 return;
@@ -187,7 +192,7 @@ namespace PersonalFinanceManager.Forms
                 Id = existingId,
                 Type = cmbType.SelectedItem!.ToString()!,
                 Title = txtTitle.Text.Trim(),
-                Category = txtCategory.Text.Trim(),
+                Category = cmbCategory.SelectedItem!.ToString()!,
                 Amount = nudAmount.Value,
                 Date = dtpDate.Value.ToString("yyyy-MM-dd")
             };
@@ -202,6 +207,36 @@ namespace PersonalFinanceManager.Forms
             DialogResult = DialogResult.Cancel;
             
             Close();
+        }
+
+        private void LoadCategoriesForSelectedType()
+        {
+            if (cmbType.SelectedItem == null)
+                return;
+
+            string selectedType = cmbType.SelectedItem.ToString()!;
+
+            List<string> categoryNames = _categories
+                .Where(c => c.Type.Equals(selectedType, StringComparison.OrdinalIgnoreCase))
+                .Select(c => c.Name)
+                .ToList();
+
+            cmbCategory.Items.Clear();
+
+            foreach (string categoryName in categoryNames)
+            {
+                cmbCategory.Items.Add(categoryName);
+            }
+
+            if (cmbCategory.Items.Count > 0)
+            {
+                cmbCategory.SelectedIndex = 0;
+            }
+        }
+
+        private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadCategoriesForSelectedType();
         }
     }
 }
