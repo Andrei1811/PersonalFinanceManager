@@ -23,5 +23,15 @@
     "Id": 5,
     "Name": "Transport",
     "Type": "Expense"
+  },
+  {
+    "Id": 6,
+    "Name": "Hobby",
+    "Type": "Expense"
+  },
+  {
+    "Id": 7,
+    "Name": "Gym",
+    "Type": "Expense"
   }
 ]

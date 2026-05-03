@@ -22,7 +22,7 @@ namespace PersonalFinanceManager.Forms
             _dataService = new JsonDataService();
             _isEditMode = false;
             ApplyUiStyling();
-            
+
         }
 
         public AddTransactionForm(TransactionListItem transactionToEdit)
@@ -33,10 +33,10 @@ namespace PersonalFinanceManager.Forms
             // Store the transaction being edited so we can pre-fill the form fields
             _transactionToEdit = transactionToEdit;
             ApplyUiStyling();
-            
+
         }
 
-        
+
 
         private void ApplyUiStyling()
         {
@@ -76,6 +76,7 @@ namespace PersonalFinanceManager.Forms
 
             StylePrimaryButton(btnOk, "OK");
             StyleSecondaryButton(btnCancel, "Anulează");
+            StylePrimaryButton(btnOpenAddCategory, "+ Categorie");
         }
 
         private static void StylePrimaryButton(Button button, string text)
@@ -198,14 +199,14 @@ namespace PersonalFinanceManager.Forms
             };
 
             DialogResult = DialogResult.OK;
-            
+
             Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
-            
+
             Close();
         }
 
@@ -237,6 +238,29 @@ namespace PersonalFinanceManager.Forms
         private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadCategoriesForSelectedType();
+        }
+
+        private void btnOpenAddCategory_Click(object sender, EventArgs e)
+        {
+            using (AddCategoryForm addCategoryForm = new AddCategoryForm())
+            {
+                if (addCategoryForm.ShowDialog() == DialogResult.OK)
+                {
+                    _categories = _dataService.LoadCategories();
+
+                    if (!string.IsNullOrWhiteSpace(addCategoryForm.NewCategoryType))
+                    {
+                        cmbType.SelectedItem = addCategoryForm.NewCategoryType;
+                    }
+
+                    LoadCategoriesForSelectedType();
+
+                    if (!string.IsNullOrWhiteSpace(addCategoryForm.NewCategoryName))
+                    {
+                        cmbCategory.SelectedItem = addCategoryForm.NewCategoryName;
+                    }
+                }
+            }
         }
     }
 }

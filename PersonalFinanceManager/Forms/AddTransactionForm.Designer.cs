@@ -41,6 +41,7 @@
             btnOk = new Button();
             btnCancel = new Button();
             cmbCategory = new ComboBox();
+            btnOpenAddCategory = new Button();
             ((System.ComponentModel.ISupportInitialize)nudAmount).BeginInit();
             SuspendLayout();
             // 
@@ -162,11 +163,22 @@
             cmbCategory.Size = new Size(150, 28);
             cmbCategory.TabIndex = 13;
             // 
+            // btnOpenAddCategory
+            // 
+            btnOpenAddCategory.Location = new Point(319, 126);
+            btnOpenAddCategory.Name = "btnOpenAddCategory";
+            btnOpenAddCategory.Size = new Size(128, 29);
+            btnOpenAddCategory.TabIndex = 14;
+            btnOpenAddCategory.Text = "+ Categorie";
+            btnOpenAddCategory.UseVisualStyleBackColor = true;
+            btnOpenAddCategory.Click += btnOpenAddCategory_Click;
+            // 
             // AddTransactionForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(400, 321);
+            ClientSize = new Size(459, 379);
+            Controls.Add(btnOpenAddCategory);
             Controls.Add(cmbCategory);
             Controls.Add(btnCancel);
             Controls.Add(btnOk);
@@ -203,5 +215,6 @@
         private Button btnOk;
         private Button btnCancel;
         private ComboBox cmbCategory;
+        private Button btnOpenAddCategory;
     }
 }
