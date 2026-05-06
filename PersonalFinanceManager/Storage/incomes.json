@@ -2,10 +2,11 @@
   {
     "Id": 1,
     "UserId": 1,
-    "Title": "Salariu",
-    "Amount": 4500.0,
+    "Title": "Salariuuu",
+    "Amount": 4511,
     "Date": "2024-10-01T00:00:00",
-    "CategoryId": 1
+    "CategoryId": 1,
+    "Poza": "C:\\Users\\andre\\Pictures\\Screenshots\\fade_clasic.jpg"
   },
   {
     "Id": 2,
@@ -13,7 +14,8 @@
     "Title": "Bonus proiect",
     "Amount": 800.0,
     "Date": "2024-10-15T00:00:00",
-    "CategoryId": 2
+    "CategoryId": 2,
+    "Poza": ""
   },
   {
     "Id": 3,
@@ -21,7 +23,8 @@
     "Title": "Freelance",
     "Amount": 1200.0,
     "Date": "2024-10-20T00:00:00",
-    "CategoryId": 2
+    "CategoryId": 2,
+    "Poza": ""
   },
   {
     "Id": 4,
@@ -29,7 +32,8 @@
     "Title": "Al 13-lea salariu",
     "Amount": 3500.0,
     "Date": "2024-11-01T00:00:00",
-    "CategoryId": 1
+    "CategoryId": 1,
+    "Poza": ""
   },
   {
     "Id": 5,
@@ -37,7 +41,8 @@
     "Title": "Vanzare line",
     "Amount": 620.0,
     "Date": "2024-11-10T00:00:00",
-    "CategoryId": 2
+    "CategoryId": 2,
+    "Poza": ""
   },
   {
     "Id": 6,
@@ -45,7 +50,8 @@
     "Title": "Salariu",
     "Amount": 5500,
     "Date": "2026-05-01T00:00:00",
-    "CategoryId": 1
+    "CategoryId": 1,
+    "Poza": ""
   },
   {
     "Id": 7,
@@ -53,6 +59,7 @@
     "Title": "Bursa",
     "Amount": 1000,
     "Date": "2026-04-02T00:00:00",
-    "CategoryId": 2
+    "CategoryId": 2,
+    "Poza": ""
   }
 ]

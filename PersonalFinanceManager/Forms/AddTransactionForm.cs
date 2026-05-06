@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using PersonalFinanceManager.Data;
+using System.IO;
 
 namespace PersonalFinanceManager.Forms
 {
@@ -44,39 +45,78 @@ namespace PersonalFinanceManager.Forms
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
 
-            lblFormTitle.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            lblFormTitle.ForeColor = Color.White;
+            BackColor = Color.FromArgb(10, 95, 120);
+
+            if (mainLayout != null)
+            {
+                mainLayout.BackColor = Color.Transparent;
+            }
+
+            if (contentLayout != null)
+            {
+                contentLayout.BackColor = Color.Transparent;
+            }
+
+            if (footerLayout != null)
+            {
+                footerLayout.BackColor = Color.Transparent;
+            }
+
+            var cardBackColor = Color.FromArgb(245, 245, 245);
+
+            if (leftLayout != null)
+            {
+                leftLayout.BackColor = cardBackColor;
+            }
+
+            if (rightLayout != null)
+            {
+                rightLayout.BackColor = cardBackColor;
+            }
+
+            lblFormTitle.Font = new Font("Segoe UI", 22F, FontStyle.Bold, GraphicsUnit.Point);
+            lblFormTitle.ForeColor = Color.FromArgb(0, 64, 84);
             lblFormTitle.BackColor = Color.Transparent;
             lblFormTitle.BorderStyle = BorderStyle.None;
+            lblFormTitle.TextAlign = ContentAlignment.MiddleCenter;
 
-            var labelFont = new Font("Segoe UI", 10F, FontStyle.Regular);
+            var labelFont = new Font("Segoe UI", 11F, FontStyle.Regular);
             lblType.Font = labelFont;
-            lblType.ForeColor = Color.White;
+            lblType.ForeColor = Color.FromArgb(35, 35, 35);
             lblType.BackColor = Color.Transparent;
             lblTitle.Font = labelFont;
-            lblTitle.ForeColor = Color.White;
+            lblTitle.ForeColor = Color.FromArgb(35, 35, 35);
             lblTitle.BackColor = Color.Transparent;
             lblCategory.Font = labelFont;
-            lblCategory.ForeColor = Color.White;
+            lblCategory.ForeColor = Color.FromArgb(35, 35, 35);
             lblCategory.BackColor = Color.Transparent;
             lblAmount.Font = labelFont;
-            lblAmount.ForeColor = Color.White;
+            lblAmount.ForeColor = Color.FromArgb(35, 35, 35);
             lblAmount.BackColor = Color.Transparent;
             lblDate.Font = labelFont;
-            lblDate.ForeColor = Color.White;
+            lblDate.ForeColor = Color.FromArgb(35, 35, 35);
             lblDate.BackColor = Color.Transparent;
 
-            cmbType.Font = new Font("Segoe UI", 10F);
+            var inputFont = new Font("Segoe UI", 11F, FontStyle.Regular);
+            cmbType.Font = inputFont;
             cmbType.BackColor = Color.FromArgb(245, 245, 245);
-            txtTitle.Font = new Font("Segoe UI", 10F);
+            txtTitle.Font = inputFont;
             txtTitle.BackColor = Color.FromArgb(245, 245, 245);
-            nudAmount.Font = new Font("Segoe UI", 10F);
+            nudAmount.Font = inputFont;
             nudAmount.BackColor = Color.FromArgb(245, 245, 245);
-            dtpDate.Font = new Font("Segoe UI", 10F);
+            dtpDate.Font = inputFont;
+            cmbCategory.Font = inputFont;
+            label1.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
 
             StylePrimaryButton(btnOk, "OK");
             StyleSecondaryButton(btnCancel, "Anulează");
-            StylePrimaryButton(btnOpenAddCategory, "+ Categorie");
+            StylePrimaryButton(btnOpenAddCategory, "+");
+            StylePrimaryButton(button1, "Load");
+
+            label1.ForeColor = Color.FromArgb(30, 30, 30);
+            label1.TabStop = false;
+
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
         }
 
         private static void StylePrimaryButton(Button button, string text)
@@ -85,7 +125,7 @@ namespace PersonalFinanceManager.Forms
             button.FlatAppearance.BorderSize = 0;
             button.BackColor = Color.FromArgb(0, 120, 215);
             button.ForeColor = Color.White;
-            button.Font = new Font("Segoe UI Semibold", 10F);
+            button.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             button.Text = text;
         }
 
@@ -96,7 +136,7 @@ namespace PersonalFinanceManager.Forms
             button.FlatAppearance.BorderColor = Color.FromArgb(0, 120, 215);
             button.BackColor = Color.White;
             button.ForeColor = Color.FromArgb(0, 120, 215);
-            button.Font = new Font("Segoe UI Semibold", 10F);
+            button.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             button.Text = text;
         }
 
@@ -136,6 +176,12 @@ namespace PersonalFinanceManager.Forms
                 LoadCategoriesForSelectedType();
                 cmbCategory.SelectedItem = _transactionToEdit.Category;
                 nudAmount.Value = _transactionToEdit.Amount;
+                label1.Text = _transactionToEdit.Poza;
+                try
+                {
+                    pictureBox1.Load(_transactionToEdit.Poza);
+                }
+                catch { }
                 dtpDate.Value = DateTime.Parse(_transactionToEdit.Date);
             }
             else
@@ -195,7 +241,8 @@ namespace PersonalFinanceManager.Forms
                 Title = txtTitle.Text.Trim(),
                 Category = cmbCategory.SelectedItem!.ToString()!,
                 Amount = nudAmount.Value,
-                Date = dtpDate.Value.ToString("yyyy-MM-dd")
+                Date = dtpDate.Value.ToString("yyyy-MM-dd"),   
+                Poza = label1.Text
             };
 
             DialogResult = DialogResult.OK;
@@ -262,5 +309,24 @@ namespace PersonalFinanceManager.Forms
                 }
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                string selectedFile = openFileDialog1.FileName;
+                try
+                {
+                    pictureBox1.Load(selectedFile);
+                    label1.Text = selectedFile;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Eroare la încărcarea imaginii: " + ex.Message);
+                }
+            }
+        }
+
+        
     }
 }

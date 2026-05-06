@@ -8,5 +8,7 @@
         public string Category { get; set; } = string.Empty;
         public decimal Amount { get; set; }
         public string Date { get; set; } = string.Empty;
+
+        public string Poza { get; set; } = string.Empty;
     }
 }

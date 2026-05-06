@@ -181,6 +181,9 @@ namespace PersonalFinanceManager.Forms
 
             if (dgvTransactions.Columns["Date"] != null)
                 dgvTransactions.Columns["Date"].HeaderText = "Dată";
+
+            if (dgvTransactions.Columns["Poza"] != null)
+                dgvTransactions.Columns["Poza"].Visible = false;
         }
 
         private List<TransactionListItem> ApplyFilters(List<TransactionListItem> originalList)
@@ -371,7 +374,8 @@ namespace PersonalFinanceManager.Forms
                 Title = selectedRow.Cells["Title"].Value?.ToString() ?? "",
                 Category = selectedRow.Cells["Category"].Value?.ToString() ?? "",
                 Amount = Convert.ToDecimal(selectedRow.Cells["Amount"].Value),
-                Date = selectedRow.Cells["Date"].Value?.ToString() ?? ""
+                Date = selectedRow.Cells["Date"].Value?.ToString() ?? "",
+                Poza = selectedRow.Cells["Poza"].Value?.ToString() ?? ""
             };
 
             AddTransactionForm editForm = new AddTransactionForm(selectedTransaction);

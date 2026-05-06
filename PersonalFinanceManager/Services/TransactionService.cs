@@ -34,7 +34,9 @@ namespace PersonalFinanceManager.Services
                     Title = income.Title,
                     Category = categoryName,
                     Amount = income.Amount,
-                    Date = income.Date.ToString("yyyy-MM-dd")
+                    Date = income.Date.ToString("yyyy-MM-dd"),
+                    Poza = income.Poza
+
                 });
             }
 
@@ -52,7 +54,8 @@ namespace PersonalFinanceManager.Services
                     Title = expense.Title,
                     Category = categoryName,
                     Amount = expense.Amount,
-                    Date = expense.Date.ToString("yyyy-MM-dd")
+                    Date = expense.Date.ToString("yyyy-MM-dd"),
+                    Poza = expense.Poza
                 });
             }
 
@@ -86,7 +89,8 @@ namespace PersonalFinanceManager.Services
                     Title = item.Title,
                     Amount = item.Amount,
                     Date = DateTime.Parse(item.Date),
-                    CategoryId = category.Id
+                    CategoryId = category.Id,
+                    Poza = item.Poza
                 };
 
                 incomes.Add(newIncome);
@@ -109,7 +113,8 @@ namespace PersonalFinanceManager.Services
                     Title = item.Title,
                     Amount = item.Amount,
                     Date = DateTime.Parse(item.Date),
-                    CategoryId = category.Id
+                    CategoryId = category.Id,
+                    Poza = item.Poza
                 };
 
                 expenses.Add(newExpense);
@@ -153,6 +158,7 @@ namespace PersonalFinanceManager.Services
                 incomeToUpdate.Amount = item.Amount;
                 incomeToUpdate.Date = DateTime.Parse(item.Date);
                 incomeToUpdate.CategoryId = category.Id;
+                incomeToUpdate.Poza = item.Poza;
 
                 _dataService.SaveIncomes(incomes);
 
@@ -176,6 +182,7 @@ namespace PersonalFinanceManager.Services
                 expenseToUpdate.Amount = item.Amount;
                 expenseToUpdate.Date = DateTime.Parse(item.Date);
                 expenseToUpdate.CategoryId = category.Id;
+                expenseToUpdate.Poza = item.Poza;
 
                 _dataService.SaveExpenses(expenses);
 
