@@ -46,6 +46,7 @@
             lblBalance = new Label();
             btnOpenDashboard = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvTransactions).BeginInit();
+
             SuspendLayout();
             // 
             // lblTitle
@@ -104,7 +105,9 @@
             dgvTransactions.TabIndex = 6;
             dgvTransactions.CellClick += dgvTransactions_CellClick;
             dgvTransactions.CellContentClick += dgvTransactions_CellContentClick;
+            dgvTransactions.CellDoubleClick += dgvTransactions_CellDoubleClick;
             // 
+
             // btnAddTransaction
             // 
             btnAddTransaction.Location = new Point(856, 149);

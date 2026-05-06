@@ -359,42 +359,7 @@ namespace PersonalFinanceManager.Forms
         //logica pentru editare tranzactie: verifica daca utilizatorul a selectat o tranzactie, apoi deschide un form de adaugare pre-populat cu datele tranzactiei selectate, iar daca utilizatorul a editat ceva, se apeleaza serviciul de tranzactii pentru a salva in baza de date, apoi se reincarca lista reala si se refresh-uieste grid-ul
         private void btnEditTransaction_Click(object sender, EventArgs e)
         {
-            if (dgvTransactions.SelectedRows.Count == 0)
-            {
-                MessageBox.Show("Selectează o tranzacție din tabel.");
-                return;
-            }
-
-            DataGridViewRow selectedRow = dgvTransactions.SelectedRows[0];
-
-            TransactionListItem selectedTransaction = new TransactionListItem
-            {
-                Id = Convert.ToInt32(selectedRow.Cells["Id"].Value),
-                Type = selectedRow.Cells["Type"].Value?.ToString() ?? "",
-                Title = selectedRow.Cells["Title"].Value?.ToString() ?? "",
-                Category = selectedRow.Cells["Category"].Value?.ToString() ?? "",
-                Amount = Convert.ToDecimal(selectedRow.Cells["Amount"].Value),
-                Date = selectedRow.Cells["Date"].Value?.ToString() ?? "",
-                Poza = selectedRow.Cells["Poza"].Value?.ToString() ?? ""
-            };
-
-            AddTransactionForm editForm = new AddTransactionForm(selectedTransaction);
-
-            if (editForm.ShowDialog() == DialogResult.OK && editForm.NewTransaction != null)
-            {
-                int userId = SessionManager.CurrentUser != null ? SessionManager.CurrentUser.Id : 1;
-
-                bool success = _transactionService.UpdateTransaction(editForm.NewTransaction, userId, out string message);
-
-                MessageBox.Show(message);
-
-                if (success)
-                {
-                    LoadRealTransactions();
-                    RefreshGrid();
-
-                }
-            }
+            OpenEditSelectedTransaction();
         }
 
         private void btnLogout_Click(object sender, EventArgs e)
@@ -459,6 +424,58 @@ namespace PersonalFinanceManager.Forms
         {
             CategoryDashboardForm dashboardForm = new CategoryDashboardForm(_transactions);
             dashboardForm.ShowDialog();
+        }
+
+        private void OpenEditSelectedTransaction()
+        {
+            if (dgvTransactions.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Selectează o tranzacție din tabel.");
+                return;
+            }
+
+            DataGridViewRow selectedRow = dgvTransactions.SelectedRows[0];
+
+            TransactionListItem selectedTransaction = new TransactionListItem
+            {
+                Id = Convert.ToInt32(selectedRow.Cells["Id"].Value),
+                Type = selectedRow.Cells["Type"].Value?.ToString() ?? "",
+                Title = selectedRow.Cells["Title"].Value?.ToString() ?? "",
+                Category = selectedRow.Cells["Category"].Value?.ToString() ?? "",
+                Amount = Convert.ToDecimal(selectedRow.Cells["Amount"].Value),
+                Date = selectedRow.Cells["Date"].Value?.ToString() ?? "",
+                Poza = selectedRow.Cells["Poza"].Value?.ToString() ?? ""
+            };
+
+            AddTransactionForm editForm = new AddTransactionForm(selectedTransaction);
+
+            if (editForm.ShowDialog() == DialogResult.OK && editForm.NewTransaction != null)
+            {
+                int userId = SessionManager.CurrentUser != null ? SessionManager.CurrentUser.Id : 1;
+
+                bool success = _transactionService.UpdateTransaction(editForm.NewTransaction, userId, out string message);
+
+                MessageBox.Show(message);
+
+                if (success)
+                {
+                    LoadRealTransactions();
+                    RefreshGrid();
+                }
+            }
+        }
+
+        private void dgvTransactions_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
+
+            dgvTransactions.ClearSelection();
+            dgvTransactions.Rows[e.RowIndex].Selected = true;
+
+            OpenEditSelectedTransaction();
         }
     }
 }
