@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using PersonalFinanceManager.Data;
 using System.IO;
+using PersonalFinanceManager.Services;
 
 namespace PersonalFinanceManager.Forms
 {
@@ -14,6 +15,7 @@ namespace PersonalFinanceManager.Forms
         // In edit mode, this holds the transaction being edited. In add mode, it will be null.
         private readonly TransactionListItem? _transactionToEdit;
         private readonly JsonDataService _dataService;
+        private readonly ReceiptOcrService _receiptOcrService;
         private List<Category> _categories = new List<Category>();
 
 
@@ -21,20 +23,19 @@ namespace PersonalFinanceManager.Forms
         {
             InitializeComponent();
             _dataService = new JsonDataService();
+            _receiptOcrService = new ReceiptOcrService();
             _isEditMode = false;
             ApplyUiStyling();
-
         }
 
         public AddTransactionForm(TransactionListItem transactionToEdit)
         {
             InitializeComponent();
             _dataService = new JsonDataService();
+            _receiptOcrService = new ReceiptOcrService();
             _isEditMode = true;
-            // Store the transaction being edited so we can pre-fill the form fields
             _transactionToEdit = transactionToEdit;
             ApplyUiStyling();
-
         }
 
 
@@ -312,21 +313,62 @@ namespace PersonalFinanceManager.Forms
 
         private void button1_Click(object sender, EventArgs e)
         {
+            openFileDialog1.Filter = "Imagini|*.png;*.jpg;*.jpeg;*.bmp";
+
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 string selectedFile = openFileDialog1.FileName;
+
                 try
                 {
+                    pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                     pictureBox1.Load(selectedFile);
                     label1.Text = selectedFile;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Eroare la încărcarea imaginii: " + ex.Message);
+                    return;
                 }
+
+                ReceiptOcrResult ocrResult = _receiptOcrService.AnalyzeReceipt(selectedFile);
+
+                if (!ocrResult.Success)
+                {
+                    MessageBox.Show(ocrResult.Message);
+                    return;
+                }
+
+                if (ocrResult.Total.HasValue)
+                {
+                    nudAmount.Value = ocrResult.Total.Value;
+                }
+
+                if (ocrResult.Date.HasValue)
+                {
+                    dtpDate.Value = ocrResult.Date.Value;
+                }
+
+                cmbType.SelectedItem = "Expense";
+                LoadCategoriesForSelectedType();
+
+                if (cmbCategory.Items.Contains("Mancare"))
+                {
+                    cmbCategory.SelectedItem = "Mancare";
+                }
+
+                if (string.IsNullOrWhiteSpace(txtTitle.Text))
+                {
+                    txtTitle.Text = "Bon fiscal";
+                }
+
+                MessageBox.Show(
+                    $"OCR finalizat.\n\n" +
+                    $"Data: {(ocrResult.Date.HasValue ? ocrResult.Date.Value.ToString("dd.MM.yyyy") : "-")}\n" +
+                    $"Total: {(ocrResult.Total.HasValue ? ocrResult.Total.Value.ToString("0.00") : "-")}");
             }
         }
 
-        
+
     }
 }

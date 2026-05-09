@@ -70,5 +70,23 @@
     "Date": "2026-05-01T00:00:00",
     "CategoryId": 5,
     "Poza": ""
+  },
+  {
+    "Id": 9,
+    "UserId": 1,
+    "Title": "Bon fiscal",
+    "Amount": 110.00,
+    "Date": "2026-05-07T00:00:00",
+    "CategoryId": 3,
+    "Poza": "C:\\Users\\andre\\Desktop\\WhatsApp Image 2026-05-07 at 19.08.56.jpeg"
+  },
+  {
+    "Id": 10,
+    "UserId": 2,
+    "Title": "Bon fiscal",
+    "Amount": 110.00,
+    "Date": "2026-05-07T00:00:00",
+    "CategoryId": 3,
+    "Poza": "C:\\Users\\andre\\Desktop\\WhatsApp Image 2026-05-07 at 19.08.56.jpeg"
   }
 ]
