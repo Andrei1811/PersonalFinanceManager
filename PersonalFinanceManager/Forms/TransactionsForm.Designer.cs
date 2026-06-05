@@ -45,8 +45,8 @@
             lblTotalExpense = new Label();
             lblBalance = new Label();
             btnOpenDashboard = new Button();
+            btnViewReceipt = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvTransactions).BeginInit();
-
             SuspendLayout();
             // 
             // lblTitle
@@ -107,7 +107,6 @@
             dgvTransactions.CellContentClick += dgvTransactions_CellContentClick;
             dgvTransactions.CellDoubleClick += dgvTransactions_CellDoubleClick;
             // 
-
             // btnAddTransaction
             // 
             btnAddTransaction.Location = new Point(856, 149);
@@ -213,11 +212,22 @@
             btnOpenDashboard.UseVisualStyleBackColor = true;
             btnOpenDashboard.Click += btnOpenDashboard_Click;
             // 
+            // btnViewReceipt
+            // 
+            btnViewReceipt.Location = new Point(856, 435);
+            btnViewReceipt.Name = "btnViewReceipt";
+            btnViewReceipt.Size = new Size(94, 29);
+            btnViewReceipt.TabIndex = 18;
+            btnViewReceipt.Text = "Vezi bon";
+            btnViewReceipt.UseVisualStyleBackColor = true;
+            btnViewReceipt.Click += btnViewReceipt_Click;
+            // 
             // TransactionsForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(982, 553);
+            Controls.Add(btnViewReceipt);
             Controls.Add(btnOpenDashboard);
             Controls.Add(lblBalance);
             Controls.Add(lblTotalExpense);
@@ -262,5 +272,6 @@
         private Label lblTotalExpense;
         private Label lblBalance;
         private Button btnOpenDashboard;
+        private Button btnViewReceipt;
     }
 }

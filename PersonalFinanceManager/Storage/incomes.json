@@ -61,5 +61,14 @@
     "Date": "2026-04-02T00:00:00",
     "CategoryId": 2,
     "Poza": ""
+  },
+  {
+    "Id": 8,
+    "UserId": 3,
+    "Title": "bonus",
+    "Amount": 150,
+    "Date": "2026-05-09T00:00:00",
+    "CategoryId": 1,
+    "Poza": ""
   }
 ]

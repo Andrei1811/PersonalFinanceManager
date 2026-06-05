@@ -95,6 +95,7 @@ namespace PersonalFinanceManager.Forms
             StylePrimaryButton(btnDeleteTransaction, "Șterge");
             StylePrimaryButton(btnEditTransaction, "Editează");
             StylePrimaryButton(btnOpenDashboard, "Dashboard");
+            StylePrimaryButton(btnViewReceipt, "Vezi bon");
             StylePrimaryButton(btnLogout, "Logout");
 
             btnOpenDashboard.Size = new Size(120, btnOpenDashboard.Height);
@@ -476,6 +477,34 @@ namespace PersonalFinanceManager.Forms
             dgvTransactions.Rows[e.RowIndex].Selected = true;
 
             OpenEditSelectedTransaction();
+        }
+
+        private void btnViewReceipt_Click(object sender, EventArgs e)
+        {
+            if (dgvTransactions.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Selectează o tranzacție din tabel.");
+                return;
+            }
+
+            DataGridViewRow selectedRow = dgvTransactions.SelectedRows[0];
+
+            string receiptPath = selectedRow.Cells["Poza"].Value?.ToString() ?? "";
+
+            if (string.IsNullOrWhiteSpace(receiptPath))
+            {
+                MessageBox.Show("Această tranzacție nu are bon atașat.");
+                return;
+            }
+
+            if (!File.Exists(receiptPath))
+            {
+                MessageBox.Show("Imaginea bonului nu a fost găsită pe disc.");
+                return;
+            }
+
+            ReceiptViewerForm receiptViewerForm = new ReceiptViewerForm(receiptPath);
+            receiptViewerForm.ShowDialog();
         }
     }
 }

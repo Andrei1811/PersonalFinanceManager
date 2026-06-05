@@ -5,6 +5,7 @@ using PersonalFinanceManager.Data;
 using System.IO;
 using PersonalFinanceManager.Services;
 
+
 namespace PersonalFinanceManager.Forms
 {
     public partial class AddTransactionForm : Form
@@ -283,6 +284,27 @@ namespace PersonalFinanceManager.Forms
             }
         }
 
+        private string CopyReceiptImageToStorage(string originalImagePath)
+        {
+            string storageFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Storage");
+            string receiptsFolder = Path.Combine(storageFolder, "Receipts");
+
+            if (!Directory.Exists(receiptsFolder))
+            {
+                Directory.CreateDirectory(receiptsFolder);
+            }
+
+            string extension = Path.GetExtension(originalImagePath);
+
+            string newFileName = $"receipt_{DateTime.Now:yyyyMMdd_HHmmss_fff}{extension}";
+
+            string destinationPath = Path.Combine(receiptsFolder, newFileName);
+
+            File.Copy(originalImagePath, destinationPath, true);
+
+            return destinationPath;
+        }
+
         private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadCategoriesForSelectedType();
@@ -323,7 +345,6 @@ namespace PersonalFinanceManager.Forms
                 {
                     pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                     pictureBox1.Load(selectedFile);
-                    label1.Text = selectedFile;
                 }
                 catch (Exception ex)
                 {
@@ -336,6 +357,19 @@ namespace PersonalFinanceManager.Forms
                 if (!ocrResult.Success)
                 {
                     MessageBox.Show(ocrResult.Message);
+                    return;
+                }
+
+                string storedImagePath;
+
+                try
+                {
+                    storedImagePath = CopyReceiptImageToStorage(selectedFile);
+                    label1.Text = storedImagePath;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Eroare la copierea imaginii în folderul aplicației: " + ex.Message);
                     return;
                 }
 
@@ -365,7 +399,8 @@ namespace PersonalFinanceManager.Forms
                 MessageBox.Show(
                     $"OCR finalizat.\n\n" +
                     $"Data: {(ocrResult.Date.HasValue ? ocrResult.Date.Value.ToString("dd.MM.yyyy") : "-")}\n" +
-                    $"Total: {(ocrResult.Total.HasValue ? ocrResult.Total.Value.ToString("0.00") : "-")}");
+                    $"Total: {(ocrResult.Total.HasValue ? ocrResult.Total.Value.ToString("0.00") : "-")}\n\n" +
+                    $"Imagine salvată intern în:\n{storedImagePath}");
             }
         }
 
