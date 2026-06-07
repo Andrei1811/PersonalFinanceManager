@@ -97,5 +97,23 @@
     "Date": "2026-05-07T00:00:00",
     "CategoryId": 3,
     "Poza": "C:\\Users\\andre\\Desktop\\PersonalFinanceManager\\PersonalFinanceManager\\bin\\Debug\\net8.0-windows7.0\\Storage\\Receipts\\receipt_20260605_164319_384.jpeg"
+  },
+  {
+    "Id": 13,
+    "UserId": 1,
+    "Title": "rrrrr",
+    "Amount": 600,
+    "Date": "2026-06-06T00:00:00",
+    "CategoryId": 3,
+    "Poza": ""
+  },
+  {
+    "Id": 14,
+    "UserId": 1,
+    "Title": "Bon fiscal",
+    "Amount": 110.00,
+    "Date": "2026-05-07T00:00:00",
+    "CategoryId": 3,
+    "Poza": ""
   }
 ]

@@ -5,7 +5,6 @@ using PersonalFinanceManager.Data;
 using System.IO;
 using PersonalFinanceManager.Services;
 
-
 namespace PersonalFinanceManager.Forms
 {
     public partial class AddTransactionForm : Form
@@ -13,33 +12,47 @@ namespace PersonalFinanceManager.Forms
         public TransactionListItem? NewTransaction { get; private set; }
 
         private readonly bool _isEditMode;
-        // In edit mode, this holds the transaction being edited. In add mode, it will be null.
         private readonly TransactionListItem? _transactionToEdit;
         private readonly JsonDataService _dataService;
         private readonly ReceiptOcrService _receiptOcrService;
+
         private List<Category> _categories = new List<Category>();
 
+        // Aici păstrăm path-ul real al bonului care se salvează în JSON.
+        // Label-ul / TextBox-ul este doar pentru afișare.
+        private string _receiptPath = "";
+
+        // Buton creat din cod pentru ștergerea bonului atașat.
+        private Button btnRemoveReceipt = new Button();
 
         public AddTransactionForm()
         {
             InitializeComponent();
+
             _dataService = new JsonDataService();
             _receiptOcrService = new ReceiptOcrService();
+
             _isEditMode = false;
+
             ApplyUiStyling();
+
+            Load += AddTransactionForm_CreateRemoveReceiptButton;
         }
 
         public AddTransactionForm(TransactionListItem transactionToEdit)
         {
             InitializeComponent();
+
             _dataService = new JsonDataService();
             _receiptOcrService = new ReceiptOcrService();
+
             _isEditMode = true;
             _transactionToEdit = transactionToEdit;
+
             ApplyUiStyling();
+
+            Load += AddTransactionForm_CreateRemoveReceiptButton;
         }
-
-
 
         private void ApplyUiStyling()
         {
@@ -83,42 +96,69 @@ namespace PersonalFinanceManager.Forms
             lblFormTitle.TextAlign = ContentAlignment.MiddleCenter;
 
             var labelFont = new Font("Segoe UI", 11F, FontStyle.Regular);
+
             lblType.Font = labelFont;
             lblType.ForeColor = Color.FromArgb(35, 35, 35);
             lblType.BackColor = Color.Transparent;
+
             lblTitle.Font = labelFont;
             lblTitle.ForeColor = Color.FromArgb(35, 35, 35);
             lblTitle.BackColor = Color.Transparent;
+
             lblCategory.Font = labelFont;
             lblCategory.ForeColor = Color.FromArgb(35, 35, 35);
             lblCategory.BackColor = Color.Transparent;
+
             lblAmount.Font = labelFont;
             lblAmount.ForeColor = Color.FromArgb(35, 35, 35);
             lblAmount.BackColor = Color.Transparent;
+
             lblDate.Font = labelFont;
             lblDate.ForeColor = Color.FromArgb(35, 35, 35);
             lblDate.BackColor = Color.Transparent;
 
             var inputFont = new Font("Segoe UI", 11F, FontStyle.Regular);
+
             cmbType.Font = inputFont;
             cmbType.BackColor = Color.FromArgb(245, 245, 245);
+
             txtTitle.Font = inputFont;
             txtTitle.BackColor = Color.FromArgb(245, 245, 245);
+
             nudAmount.Font = inputFont;
             nudAmount.BackColor = Color.FromArgb(245, 245, 245);
+
             dtpDate.Font = inputFont;
+
             cmbCategory.Font = inputFont;
+
             label1.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            label1.ForeColor = Color.FromArgb(30, 30, 30);
+            label1.TabStop = false;
 
             StylePrimaryButton(btnOk, "OK");
             StyleSecondaryButton(btnCancel, "Anulează");
             StylePrimaryButton(btnOpenAddCategory, "+");
-            StylePrimaryButton(button1, "Load");
-
-            label1.ForeColor = Color.FromArgb(30, 30, 30);
-            label1.TabStop = false;
+            StylePrimaryButton(button1, "Încarcă bon");
 
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+        }
+
+        private void AddTransactionForm_CreateRemoveReceiptButton(object? sender, EventArgs e)
+        {
+            if (btnRemoveReceipt.Parent != null)
+            {
+                return;
+            }
+
+            btnRemoveReceipt.Name = "btnRemoveReceipt";
+            // Place the remove button into the middle column of the pathLoadLayout
+            btnRemoveReceipt.Dock = DockStyle.Fill;
+            StyleSecondaryButton(btnRemoveReceipt, "Șterge bon");
+            btnRemoveReceipt.Click += btnRemoveReceipt_Click;
+
+            // Insert into the layout at column 1 (middle column) row 0
+            pathLoadLayout.Controls.Add(btnRemoveReceipt, 1, 0);
         }
 
         private static void StylePrimaryButton(Button button, string text)
@@ -144,7 +184,11 @@ namespace PersonalFinanceManager.Forms
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            using (LinearGradientBrush brush = new LinearGradientBrush(ClientRectangle, Color.FromArgb(10, 95, 120), Color.FromArgb(2, 128, 144), 45f))
+            using (LinearGradientBrush brush = new LinearGradientBrush(
+                ClientRectangle,
+                Color.FromArgb(10, 95, 120),
+                Color.FromArgb(2, 128, 144),
+                45f))
             {
                 e.Graphics.FillRectangle(brush, ClientRectangle);
             }
@@ -154,8 +198,13 @@ namespace PersonalFinanceManager.Forms
             {
                 var text = "Finanțe";
                 var size = e.Graphics.MeasureString(text, f);
+
                 e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                e.Graphics.DrawString(text, f, sb, new PointF(ClientSize.Width - size.Width - 20, ClientSize.Height - size.Height - 40));
+                e.Graphics.DrawString(
+                    text,
+                    f,
+                    sb,
+                    new PointF(ClientSize.Width - size.Width - 20, ClientSize.Height - size.Height - 40));
             }
         }
 
@@ -164,7 +213,10 @@ namespace PersonalFinanceManager.Forms
             cmbType.Items.Clear();
             cmbType.Items.Add("Income");
             cmbType.Items.Add("Expense");
+
             _categories = _dataService.LoadCategories();
+
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
 
             if (_isEditMode && _transactionToEdit != null)
             {
@@ -175,16 +227,32 @@ namespace PersonalFinanceManager.Forms
                 cmbType.Enabled = false;
 
                 txtTitle.Text = _transactionToEdit.Title;
+
                 LoadCategoriesForSelectedType();
                 cmbCategory.SelectedItem = _transactionToEdit.Category;
+
                 nudAmount.Value = _transactionToEdit.Amount;
-                label1.Text = _transactionToEdit.Poza;
-                try
-                {
-                    pictureBox1.Load(_transactionToEdit.Poza);
-                }
-                catch { }
                 dtpDate.Value = DateTime.Parse(_transactionToEdit.Date);
+
+                _receiptPath = _transactionToEdit.Poza;
+
+                if (!string.IsNullOrWhiteSpace(_receiptPath))
+                {
+                    label1.Text = Path.GetFileName(_receiptPath);
+                }
+                else
+                {
+                    label1.Text = "Niciun bon atașat";
+                }
+
+                if (!string.IsNullOrWhiteSpace(_receiptPath) && File.Exists(_receiptPath))
+                {
+                    pictureBox1.Load(_receiptPath);
+                }
+                else
+                {
+                    pictureBox1.Image = null;
+                }
             }
             else
             {
@@ -201,6 +269,10 @@ namespace PersonalFinanceManager.Forms
 
                 nudAmount.Value = 0;
                 dtpDate.Value = DateTime.Today;
+
+                _receiptPath = "";
+                label1.Text = "Niciun bon atașat";
+                pictureBox1.Image = null;
             }
         }
 
@@ -211,6 +283,7 @@ namespace PersonalFinanceManager.Forms
                 MessageBox.Show("Titlul este obligatoriu.");
                 return;
             }
+
             if (cmbCategory.SelectedItem == null)
             {
                 MessageBox.Show("Categoria este obligatorie.");
@@ -243,19 +316,17 @@ namespace PersonalFinanceManager.Forms
                 Title = txtTitle.Text.Trim(),
                 Category = cmbCategory.SelectedItem!.ToString()!,
                 Amount = nudAmount.Value,
-                Date = dtpDate.Value.ToString("yyyy-MM-dd"),   
-                Poza = label1.Text
+                Date = dtpDate.Value.ToString("yyyy-MM-dd"),
+                Poza = _receiptPath
             };
 
             DialogResult = DialogResult.OK;
-
             Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
-
             Close();
         }
 
@@ -365,7 +436,9 @@ namespace PersonalFinanceManager.Forms
                 try
                 {
                     storedImagePath = CopyReceiptImageToStorage(selectedFile);
-                    label1.Text = storedImagePath;
+
+                    _receiptPath = storedImagePath;
+                    label1.Text = Path.GetFileName(storedImagePath);
                 }
                 catch (Exception ex)
                 {
@@ -404,6 +477,30 @@ namespace PersonalFinanceManager.Forms
             }
         }
 
+        private void btnRemoveReceipt_Click(object? sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(_receiptPath))
+            {
+                MessageBox.Show("Nu există niciun bon atașat.");
+                return;
+            }
 
+            DialogResult result = MessageBox.Show(
+                "Sigur vrei să ștergi bonul atașat acestei tranzacții?",
+                "Ștergere bon",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+            {
+                return;
+            }
+
+            _receiptPath = "";
+            pictureBox1.Image = null;
+            label1.Text = "Niciun bon atașat";
+
+            MessageBox.Show("Bonul a fost eliminat din tranzacție.");
+        }
     }
 }

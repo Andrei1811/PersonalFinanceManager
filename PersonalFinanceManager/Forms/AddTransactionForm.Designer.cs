@@ -44,7 +44,6 @@ namespace PersonalFinanceManager.Forms
             cmbCategory = new ComboBox();
             btnOpenAddCategory = new Button();
             pictureBox1 = new PictureBox();
-            label1 = new TextBox();
             button1 = new Button();
             openFileDialog1 = new OpenFileDialog();
             mainLayout = new TableLayoutPanel();
@@ -53,6 +52,7 @@ namespace PersonalFinanceManager.Forms
             categoryLayout = new TableLayoutPanel();
             rightLayout = new TableLayoutPanel();
             pathLoadLayout = new TableLayoutPanel();
+            label1 = new TextBox();
             footerLayout = new TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)nudAmount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -225,20 +225,6 @@ namespace PersonalFinanceManager.Forms
             pictureBox1.TabIndex = 15;
             pictureBox1.TabStop = false;
             // 
-            // label1
-            // 
-            label1.BackColor = Color.FromArgb(245, 245, 245);
-            label1.BorderStyle = BorderStyle.FixedSingle;
-            label1.Dock = DockStyle.Fill;
-            label1.Location = new Point(0, 3);
-            label1.Margin = new Padding(0, 3, 8, 3);
-            label1.Name = "label1";
-            label1.ReadOnly = true;
-            label1.Size = new Size(267, 27);
-            label1.TabIndex = 17;
-            label1.WordWrap = false;
-            label1.Click += label1_Click;
-            // 
             // button1
             // 
             button1.Dock = DockStyle.Fill;
@@ -354,11 +340,12 @@ namespace PersonalFinanceManager.Forms
             // 
             // pathLoadLayout
             // 
-            pathLoadLayout.ColumnCount = 2;
+            pathLoadLayout.ColumnCount = 3;
             pathLoadLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             pathLoadLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+            pathLoadLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
             pathLoadLayout.Controls.Add(label1, 0, 0);
-            pathLoadLayout.Controls.Add(button1, 1, 0);
+            pathLoadLayout.Controls.Add(button1, 2, 0);
             pathLoadLayout.Dock = DockStyle.Fill;
             pathLoadLayout.Location = new Point(10, 386);
             pathLoadLayout.Margin = new Padding(0);
@@ -367,6 +354,19 @@ namespace PersonalFinanceManager.Forms
             pathLoadLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             pathLoadLayout.Size = new Size(395, 40);
             pathLoadLayout.TabIndex = 16;
+            // 
+            // label1
+            // 
+            label1.BackColor = Color.FromArgb(245, 245, 245);
+            label1.BorderStyle = BorderStyle.FixedSingle;
+            label1.Location = new Point(0, 3);
+            label1.Margin = new Padding(0, 3, 8, 3);
+            label1.Name = "label1";
+            label1.ReadOnly = true;
+            label1.Size = new Size(171, 27);
+            label1.TabIndex = 17;
+            label1.WordWrap = false;
+            label1.Click += label1_Click;
             // 
             // footerLayout
             // 
@@ -439,8 +439,8 @@ namespace PersonalFinanceManager.Forms
         private TableLayoutPanel rightLayout;
         private TableLayoutPanel pathLoadLayout;
         private TableLayoutPanel footerLayout;
-        private TextBox label1;
         private Button button1;
         private OpenFileDialog openFileDialog1;
+        private TextBox label1;
     }
 }
