@@ -52,7 +52,8 @@ namespace PersonalFinanceManager.Forms
             categoryLayout = new TableLayoutPanel();
             rightLayout = new TableLayoutPanel();
             pathLoadLayout = new TableLayoutPanel();
-            label1 = new TextBox();
+            buttonsLayout = new TableLayoutPanel();
+            label1 = new Label();
             footerLayout = new TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)nudAmount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -62,6 +63,7 @@ namespace PersonalFinanceManager.Forms
             categoryLayout.SuspendLayout();
             rightLayout.SuspendLayout();
             pathLoadLayout.SuspendLayout();
+            buttonsLayout.SuspendLayout();
             footerLayout.SuspendLayout();
             SuspendLayout();
             // 
@@ -327,25 +329,24 @@ namespace PersonalFinanceManager.Forms
             rightLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             rightLayout.Controls.Add(pictureBox1, 0, 0);
             rightLayout.Controls.Add(pathLoadLayout, 0, 1);
+            rightLayout.Controls.Add(buttonsLayout, 0, 2);
             rightLayout.Dock = DockStyle.Fill;
             rightLayout.Location = new Point(537, 0);
             rightLayout.Margin = new Padding(14, 0, 0, 0);
             rightLayout.Name = "rightLayout";
             rightLayout.Padding = new Padding(10);
-            rightLayout.RowCount = 2;
+            rightLayout.RowCount = 3;
             rightLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            rightLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 36F));
             rightLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             rightLayout.Size = new Size(415, 436);
             rightLayout.TabIndex = 1;
             // 
             // pathLoadLayout
             // 
-            pathLoadLayout.ColumnCount = 3;
+            pathLoadLayout.ColumnCount = 1;
             pathLoadLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            pathLoadLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
-            pathLoadLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
             pathLoadLayout.Controls.Add(label1, 0, 0);
-            pathLoadLayout.Controls.Add(button1, 2, 0);
             pathLoadLayout.Dock = DockStyle.Fill;
             pathLoadLayout.Location = new Point(10, 386);
             pathLoadLayout.Margin = new Padding(0);
@@ -355,17 +356,34 @@ namespace PersonalFinanceManager.Forms
             pathLoadLayout.Size = new Size(395, 40);
             pathLoadLayout.TabIndex = 16;
             // 
+            // buttonsLayout
+            // 
+            buttonsLayout.ColumnCount = 3;
+            buttonsLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            buttonsLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            buttonsLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            buttonsLayout.Controls.Add(button1, 2, 0);
+            buttonsLayout.Dock = DockStyle.Fill;
+            buttonsLayout.Location = new Point(10, 422);
+            buttonsLayout.Margin = new Padding(0);
+            buttonsLayout.Name = "buttonsLayout";
+            buttonsLayout.RowCount = 1;
+            buttonsLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            buttonsLayout.Size = new Size(395, 40);
+            buttonsLayout.TabIndex = 18;
+            // 
             // label1
             // 
             label1.BackColor = Color.FromArgb(245, 245, 245);
             label1.BorderStyle = BorderStyle.FixedSingle;
-            label1.Location = new Point(0, 3);
-            label1.Margin = new Padding(0, 3, 8, 3);
+            label1.Dock = DockStyle.Fill;
+            label1.Margin = new Padding(0, 6, 8, 6);
             label1.Name = "label1";
-            label1.ReadOnly = true;
-            label1.Size = new Size(171, 27);
             label1.TabIndex = 17;
-            label1.WordWrap = false;
+            label1.AutoEllipsis = true;
+            label1.MinimumSize = new Size(80, 30);
+            label1.Text = "Niciun bon atașat";
+            label1.TextAlign = ContentAlignment.MiddleLeft;
             label1.Click += label1_Click;
             // 
             // footerLayout
@@ -407,6 +425,7 @@ namespace PersonalFinanceManager.Forms
             pathLoadLayout.ResumeLayout(false);
             pathLoadLayout.PerformLayout();
             footerLayout.ResumeLayout(false);
+            buttonsLayout.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -438,9 +457,10 @@ namespace PersonalFinanceManager.Forms
         private TableLayoutPanel categoryLayout;
         private TableLayoutPanel rightLayout;
         private TableLayoutPanel pathLoadLayout;
+        private TableLayoutPanel buttonsLayout;
         private TableLayoutPanel footerLayout;
         private Button button1;
         private OpenFileDialog openFileDialog1;
-        private TextBox label1;
+        private Label label1;
     }
 }
