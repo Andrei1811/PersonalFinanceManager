@@ -10,6 +10,7 @@ namespace PersonalFinanceManager.Data
         private readonly string _categoriesFile;
         private readonly string _incomesFile;
         private readonly string _expensesFile;
+        private readonly string _monthlyBudgetsFile;
 
         public JsonDataService()
         {
@@ -22,7 +23,7 @@ namespace PersonalFinanceManager.Data
             _categoriesFile = Path.Combine(_dataFolder, "categories.json");
             _incomesFile = Path.Combine(_dataFolder, "incomes.json");
             _expensesFile = Path.Combine(_dataFolder, "expenses.json");
-            
+            _monthlyBudgetsFile = Path.Combine(_dataFolder, "monthlyBudgets.json");
 
             CreateFilesIfNeeded();
         }
@@ -38,6 +39,7 @@ namespace PersonalFinanceManager.Data
             CreateFileIfMissing(_categoriesFile);
             CreateFileIfMissing(_incomesFile);
             CreateFileIfMissing(_expensesFile);
+            CreateFileIfMissing(_monthlyBudgetsFile);
         }
 
         private void CreateFileIfMissing(string filePath)
@@ -86,6 +88,16 @@ namespace PersonalFinanceManager.Data
         public void SaveExpenses(List<Expense> expenses)
         {
             WriteList(_expensesFile, expenses);
+        }
+
+        public List<MonthlyBudget> LoadMonthlyBudgets()
+        {
+            return ReadList<MonthlyBudget>(_monthlyBudgetsFile);
+        }
+
+        public void SaveMonthlyBudgets(List<MonthlyBudget> monthlyBudgets)
+        {
+            WriteList(_monthlyBudgetsFile, monthlyBudgets);
         }
 
         public AppData LoadAllData()

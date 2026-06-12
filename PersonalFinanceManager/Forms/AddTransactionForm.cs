@@ -23,7 +23,7 @@ namespace PersonalFinanceManager.Forms
         private string _receiptPath = "";
         private string _lastOcrText = "";
 
-        // Buton creat din cod pentru ștergerea bonului atașat.
+        // Butoane create din cod.
         private Button btnRemoveReceipt = new Button();
         private Button btnViewOcrText = new Button();
 
@@ -156,12 +156,31 @@ namespace PersonalFinanceManager.Forms
             }
 
             btnRemoveReceipt.Name = "btnRemoveReceipt";
-            // Place the remove button into the first column of the buttonsLayout
             btnRemoveReceipt.Dock = DockStyle.Fill;
+
             StyleSecondaryButton(btnRemoveReceipt, "Șterge bon");
+
             btnRemoveReceipt.Click += btnRemoveReceipt_Click;
 
             buttonsLayout.Controls.Add(btnRemoveReceipt, 0, 0);
+        }
+
+        private void AddTransactionForm_CreateViewOcrTextButton(object? sender, EventArgs e)
+        {
+            if (btnViewOcrText.Parent != null)
+            {
+                return;
+            }
+
+            btnViewOcrText.Name = "btnViewOcrText";
+            btnViewOcrText.Dock = DockStyle.Fill;
+
+            StyleSecondaryButton(btnViewOcrText, "Vezi OCR");
+
+            btnViewOcrText.Click += btnViewOcrText_Click;
+
+            buttonsLayout.Controls.Add(btnViewOcrText, 1, 0);
+            btnViewOcrText.BringToFront();
         }
 
         private static void StylePrimaryButton(Button button, string text)
@@ -183,6 +202,33 @@ namespace PersonalFinanceManager.Forms
             button.ForeColor = Color.FromArgb(0, 120, 215);
             button.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             button.Text = text;
+        }
+
+        private static void ShowInfo(string message)
+        {
+            MessageBox.Show(
+                message,
+                "Informație",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+
+        private static void ShowWarning(string message)
+        {
+            MessageBox.Show(
+                message,
+                "Atenție",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
+        }
+
+        private static void ShowError(string message)
+        {
+            MessageBox.Show(
+                message,
+                "Eroare",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -274,6 +320,7 @@ namespace PersonalFinanceManager.Forms
                 dtpDate.Value = DateTime.Today;
 
                 _receiptPath = "";
+                _lastOcrText = "";
                 label1.Text = "Niciun bon atașat";
                 pictureBox1.Image = null;
             }
@@ -283,25 +330,25 @@ namespace PersonalFinanceManager.Forms
         {
             if (string.IsNullOrWhiteSpace(txtTitle.Text))
             {
-                MessageBox.Show("Titlul este obligatoriu.");
+                ShowWarning("Titlul este obligatoriu.");
                 return;
             }
 
             if (cmbCategory.SelectedItem == null)
             {
-                MessageBox.Show("Categoria este obligatorie.");
+                ShowWarning("Categoria este obligatorie.");
                 return;
             }
 
             if (cmbType.SelectedIndex == -1)
             {
-                MessageBox.Show("Selectează tipul tranzacției.");
+                ShowWarning("Selectează tipul tranzacției.");
                 return;
             }
 
             if (nudAmount.Value <= 0)
             {
-                MessageBox.Show("Suma trebuie să fie mai mare decât 0.");
+                ShowWarning("Suma trebuie să fie mai mare decât 0.");
                 return;
             }
 
@@ -422,7 +469,7 @@ namespace PersonalFinanceManager.Forms
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Eroare la încărcarea imaginii: " + ex.Message);
+                    ShowError("Eroare la încărcarea imaginii: " + ex.Message);
                     return;
                 }
 
@@ -440,14 +487,15 @@ namespace PersonalFinanceManager.Forms
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Eroare la copierea imaginii în folderul aplicației: " + ex.Message);
+                    ShowError("Eroare la copierea imaginii în folderul aplicației: " + ex.Message);
                     return;
                 }
 
                 if (!ocrResult.Success)
                 {
-                    MessageBox.Show(
-                        ocrResult.Message + "\n\nImaginea a fost atașată, dar formularul nu a fost completat automat.");
+                    ShowWarning(
+                        ocrResult.Message +
+                        "\n\nImaginea a fost atașată, dar formularul nu a fost completat automat.");
                     return;
                 }
 
@@ -462,7 +510,7 @@ namespace PersonalFinanceManager.Forms
 
                 if (confirmResult != DialogResult.Yes)
                 {
-                    MessageBox.Show("Imaginea a fost atașată, dar câmpurile nu au fost modificate.");
+                    ShowInfo("Imaginea a fost atașată, dar câmpurile nu au fost modificate.");
                     return;
                 }
 
@@ -489,7 +537,7 @@ namespace PersonalFinanceManager.Forms
                     txtTitle.Text = "Bon fiscal";
                 }
 
-                MessageBox.Show(
+                ShowInfo(
                     $"Tranzacția a fost completată automat.\n\n" +
                     $"Imagine salvată intern în:\n{storedImagePath}");
             }
@@ -499,7 +547,7 @@ namespace PersonalFinanceManager.Forms
         {
             if (string.IsNullOrWhiteSpace(_receiptPath))
             {
-                MessageBox.Show("Nu există niciun bon atașat.");
+                ShowWarning("Nu există niciun bon atașat.");
                 return;
             }
 
@@ -518,30 +566,14 @@ namespace PersonalFinanceManager.Forms
             pictureBox1.Image = null;
             label1.Text = "Niciun bon atașat";
 
-            MessageBox.Show("Bonul a fost eliminat din tranzacție.");
-        }
-
-        private void AddTransactionForm_CreateViewOcrTextButton(object? sender, EventArgs e)
-        {
-            if (btnViewOcrText.Parent != null)
-            {
-                return;
-            }
-
-            btnViewOcrText.Name = "btnViewOcrText";
-            btnViewOcrText.Dock = DockStyle.Fill;
-            StyleSecondaryButton(btnViewOcrText, "Vezi OCR");
-            btnViewOcrText.Click += btnViewOcrText_Click;
-
-            buttonsLayout.Controls.Add(btnViewOcrText, 1, 0);
-            btnViewOcrText.BringToFront();
+            ShowInfo("Bonul a fost eliminat din tranzacție.");
         }
 
         private void btnViewOcrText_Click(object? sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(_lastOcrText))
             {
-                MessageBox.Show("Nu există text OCR disponibil. Încarcă mai întâi un bon.");
+                ShowWarning("Nu există text OCR disponibil. Încarcă mai întâi un bon.");
                 return;
             }
 

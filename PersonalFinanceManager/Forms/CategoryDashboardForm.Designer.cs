@@ -43,6 +43,7 @@
             btnApplyDateFilter = new Button();
             btnResetDashboardFilters = new Button();
             btnExportCsv = new Button();
+            btnSetBudget = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvCategorySummary).BeginInit();
             SuspendLayout();
             // 
@@ -155,7 +156,7 @@
             // 
             // btnApplyDateFilter
             // 
-            btnApplyDateFilter.Location = new Point(482, 67);
+            btnApplyDateFilter.Location = new Point(483, 49);
             btnApplyDateFilter.Name = "btnApplyDateFilter";
             btnApplyDateFilter.Size = new Size(140, 29);
             btnApplyDateFilter.TabIndex = 12;
@@ -175,7 +176,7 @@
             // 
             // btnExportCsv
             // 
-            btnExportCsv.Location = new Point(665, 67);
+            btnExportCsv.Location = new Point(652, 47);
             btnExportCsv.Name = "btnExportCsv";
             btnExportCsv.Size = new Size(123, 29);
             btnExportCsv.TabIndex = 14;
@@ -183,11 +184,22 @@
             btnExportCsv.UseVisualStyleBackColor = true;
             btnExportCsv.Click += btnExportCsv_Click;
             // 
+            // btnSetBudget
+            // 
+            btnSetBudget.Location = new Point(596, 91);
+            btnSetBudget.Name = "btnSetBudget";
+            btnSetBudget.Size = new Size(179, 29);
+            btnSetBudget.TabIndex = 15;
+            btnSetBudget.Text = "Setează buget";
+            btnSetBudget.UseVisualStyleBackColor = true;
+            btnSetBudget.Click += btnSetBudget_Click;
+            // 
             // CategoryDashboardForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnSetBudget);
             Controls.Add(btnExportCsv);
             Controls.Add(btnResetDashboardFilters);
             Controls.Add(btnApplyDateFilter);
@@ -227,5 +239,6 @@
         private Button btnApplyDateFilter;
         private Button btnResetDashboardFilters;
         private Button btnExportCsv;
+        private Button btnSetBudget;
     }
 }

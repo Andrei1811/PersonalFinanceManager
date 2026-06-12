@@ -70,6 +70,33 @@ namespace PersonalFinanceManager.Forms
             button.Text = text;
         }
 
+        private static void ShowInfo(string message)
+        {
+            MessageBox.Show(
+                message,
+                "Informație",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+
+        private static void ShowWarning(string message)
+        {
+            MessageBox.Show(
+                message,
+                "Atenție",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
+        }
+
+        private static void ShowError(string message)
+        {
+            MessageBox.Show(
+                message,
+                "Eroare",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+        }
+
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             using (LinearGradientBrush brush = new LinearGradientBrush(ClientRectangle, Color.FromArgb(10, 95, 120), Color.FromArgb(2, 128, 144), 45f))

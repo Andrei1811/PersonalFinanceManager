@@ -11,6 +11,9 @@ namespace PersonalFinanceManager.Forms
     public partial class CategoryDashboardForm : Form
     {
         private readonly List<TransactionListItem> _transactions;
+        private readonly BudgetService _budgetService;
+        private readonly Label lblBudgetInfo = new Label();
+
         private Image? _backgroundImage;
 
         public CategoryDashboardForm(List<TransactionListItem> transactions)
@@ -18,8 +21,10 @@ namespace PersonalFinanceManager.Forms
             InitializeComponent();
 
             _transactions = transactions;
+            _budgetService = new BudgetService();
 
             ApplyUiStyling();
+            CreateBudgetInfoLabel();
             Resize += CategoryDashboardForm_Resize;
 
             if (SessionManager.CurrentUser != null)
@@ -38,9 +43,9 @@ namespace PersonalFinanceManager.Forms
             cmbDashboardTypeFilter.SelectedIndex = 0;
             cmbDashboardTypeFilter.SelectedIndexChanged += cmbDashboardTypeFilter_SelectedIndexChanged;
 
+            InitializeDateFilters();
             LoadCategorySummary();
             LoadDashboardTotals();
-            InitializeDateFilters();
         }
 
         private void CategoryDashboardForm_Resize(object? sender, EventArgs e)
@@ -65,34 +70,42 @@ namespace PersonalFinanceManager.Forms
 
             lblDashboardTotalIncome.ForeColor = Color.White;
             lblDashboardTotalIncome.BackColor = Color.Transparent;
+
             lblDashboardTotalExpense.ForeColor = Color.White;
             lblDashboardTotalExpense.BackColor = Color.Transparent;
+
             lblDashboardBalance.ForeColor = Color.White;
             lblDashboardBalance.BackColor = Color.Transparent;
 
             lblDashboardTypeFilter.ForeColor = Color.White;
             lblDashboardTypeFilter.BackColor = Color.Transparent;
+
             lblStartDate.ForeColor = Color.White;
             lblStartDate.BackColor = Color.Transparent;
+
             lblEndDate.ForeColor = Color.White;
             lblEndDate.BackColor = Color.Transparent;
 
             cmbDashboardTypeFilter.Font = new Font("Segoe UI", 10F);
             cmbDashboardTypeFilter.BackColor = Color.FromArgb(245, 245, 245);
+
             dtpStartDate.Font = new Font("Segoe UI", 10F);
             dtpEndDate.Font = new Font("Segoe UI", 10F);
 
             StylePrimaryButton(btnApplyDateFilter, "Aplică perioada");
             StylePrimaryButton(btnResetDashboardFilters, "Reset filtre");
             StylePrimaryButton(btnExportCsv, "Export CSV");
+            StylePrimaryButton(btnSetBudget, "Setează buget");
 
             dgvCategorySummary.BackgroundColor = Color.White;
             dgvCategorySummary.GridColor = Color.FromArgb(230, 230, 230);
             dgvCategorySummary.BorderStyle = BorderStyle.None;
             dgvCategorySummary.EnableHeadersVisualStyles = false;
+
             dgvCategorySummary.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(0, 120, 215);
             dgvCategorySummary.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvCategorySummary.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10F);
+
             dgvCategorySummary.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
             dgvCategorySummary.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 120, 215);
             dgvCategorySummary.DefaultCellStyle.SelectionForeColor = Color.White;
@@ -203,9 +216,11 @@ namespace PersonalFinanceManager.Forms
 
             decimal balance = totalIncome - totalExpense;
 
-            lblDashboardTotalIncome.Text = $"Total venituri: {totalIncome}";
-            lblDashboardTotalExpense.Text = $"Total cheltuieli: {totalExpense}";
-            lblDashboardBalance.Text = $"Sold: {balance}";
+            lblDashboardTotalIncome.Text = $"Total venituri: {totalIncome:0.00}";
+            lblDashboardTotalExpense.Text = $"Total cheltuieli: {totalExpense:0.00}";
+            lblDashboardBalance.Text = $"Sold: {balance:0.00}";
+
+            LoadBudgetInfo();
         }
 
         private void cmbDashboardTypeFilter_SelectedIndexChanged(object sender, EventArgs e)
@@ -305,6 +320,87 @@ namespace PersonalFinanceManager.Forms
                 File.WriteAllLines(saveFileDialog.FileName, lines);
 
                 MessageBox.Show("Raportul a fost exportat cu succes.");
+            }
+        }
+
+        private void btnSetBudget_Click(object sender, EventArgs e)
+        {
+            if (SessionManager.CurrentUser == null)
+            {
+                MessageBox.Show("Nu există utilizator autentificat.");
+                return;
+            }
+
+            using (SetBudgetForm setBudgetForm = new SetBudgetForm(SessionManager.CurrentUser.Id))
+            {
+                if (setBudgetForm.ShowDialog() == DialogResult.OK)
+                {
+                    LoadDashboardTotals();
+                }
+            }
+        }
+
+        private void CreateBudgetInfoLabel()
+        {
+            if (lblBudgetInfo.Parent != null)
+            {
+                return;
+            }
+
+            lblBudgetInfo.AutoSize = true;
+            lblBudgetInfo.Location = new Point(72, 370);
+            lblBudgetInfo.Name = "lblBudgetInfo";
+            lblBudgetInfo.Font = new Font("Segoe UI Semibold", 10F);
+            lblBudgetInfo.ForeColor = Color.White;
+            lblBudgetInfo.BackColor = Color.Transparent;
+            lblBudgetInfo.Text = "Buget lunar: -";
+
+            Controls.Add(lblBudgetInfo);
+            lblBudgetInfo.BringToFront();
+        }
+
+        private void LoadBudgetInfo()
+        {
+            if (SessionManager.CurrentUser == null)
+            {
+                lblBudgetInfo.Text = "Buget lunar: utilizator neautentificat";
+                return;
+            }
+
+            DateTime selectedDate = dtpEndDate.Value.Date;
+
+            int year = selectedDate.Year;
+            int month = selectedDate.Month;
+
+            decimal budgetAmount = _budgetService.GetBudgetAmount(
+                SessionManager.CurrentUser.Id,
+                year,
+                month);
+
+            decimal monthlyExpense = _transactions
+                .Where(x => x.Type == "Expense")
+                .Where(x => DateTime.Parse(x.Date).Year == year)
+                .Where(x => DateTime.Parse(x.Date).Month == month)
+                .Sum(x => x.Amount);
+
+            if (budgetAmount <= 0)
+            {
+                lblBudgetInfo.Text =
+                   $"Buget lunar ({month:00}/{year}): nesetat | Cheltuit în luna {month:00}/{year}: {monthlyExpense:0.00}";
+                return;
+            }
+
+            decimal remaining = budgetAmount - monthlyExpense;
+
+            if (remaining >= 0)
+            {
+                lblBudgetInfo.Text =
+                    $"Buget lunar ({month:00}/{year}): {budgetAmount:0.00} | Cheltuit în luna {month:00}/{year}: {monthlyExpense:0.00} | Rămas: {remaining:0.00}";
+            }
+            else
+            {
+                lblBudgetInfo.Text =
+                   $"Buget lunar ({month:00}/{year}): {budgetAmount:0.00} | Cheltuit în luna {month:00}/{year}: {monthlyExpense:0.00} | Depășit cu: {Math.Abs(remaining):0.00}";
             }
         }
     }
