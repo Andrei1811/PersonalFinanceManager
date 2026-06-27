@@ -363,6 +363,7 @@ namespace PersonalFinanceManager.Forms
         {
             if (SessionManager.CurrentUser == null)
             {
+                lblBudgetInfo.ForeColor = Color.White;
                 lblBudgetInfo.Text = "Buget lunar: utilizator neautentificat";
                 return;
             }
@@ -385,8 +386,9 @@ namespace PersonalFinanceManager.Forms
 
             if (budgetAmount <= 0)
             {
+                lblBudgetInfo.ForeColor = Color.White;
                 lblBudgetInfo.Text =
-                   $"Buget lunar ({month:00}/{year}): nesetat | Cheltuit în luna {month:00}/{year}: {monthlyExpense:0.00}";
+                    $"Buget lunar ({month:00}/{year}): nesetat | Cheltuit în luna {month:00}/{year}: {monthlyExpense:0.00}";
                 return;
             }
 
@@ -394,13 +396,15 @@ namespace PersonalFinanceManager.Forms
 
             if (remaining >= 0)
             {
+                lblBudgetInfo.ForeColor = Color.LightGreen;
                 lblBudgetInfo.Text =
                     $"Buget lunar ({month:00}/{year}): {budgetAmount:0.00} | Cheltuit în luna {month:00}/{year}: {monthlyExpense:0.00} | Rămas: {remaining:0.00}";
             }
             else
             {
+                lblBudgetInfo.ForeColor = Color.Red;
                 lblBudgetInfo.Text =
-                   $"Buget lunar ({month:00}/{year}): {budgetAmount:0.00} | Cheltuit în luna {month:00}/{year}: {monthlyExpense:0.00} | Depășit cu: {Math.Abs(remaining):0.00}";
+                    $"Buget lunar ({month:00}/{year}): {budgetAmount:0.00} | Cheltuit în luna {month:00}/{year}: {monthlyExpense:0.00} | Depășit cu: {Math.Abs(remaining):0.00}";
             }
         }
     }
