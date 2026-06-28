@@ -3,6 +3,12 @@
     "UserId": 1,
     "Year": 2026,
     "Month": 6,
-    "Amount": 1000
+    "Amount": 1500
+  },
+  {
+    "UserId": 1,
+    "Year": 2026,
+    "Month": 5,
+    "Amount": 2
   }
 ]

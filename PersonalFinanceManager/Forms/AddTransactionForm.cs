@@ -407,7 +407,10 @@ namespace PersonalFinanceManager.Forms
 
         private string CopyReceiptImageToStorage(string originalImagePath)
         {
-            string storageFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Storage");
+            string projectFolder = Path.GetFullPath(
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\"));
+
+            string storageFolder = Path.Combine(projectFolder, "Storage");
             string receiptsFolder = Path.Combine(storageFolder, "Receipts");
 
             if (!Directory.Exists(receiptsFolder))
@@ -425,7 +428,6 @@ namespace PersonalFinanceManager.Forms
 
             return destinationPath;
         }
-
         private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadCategoriesForSelectedType();
