@@ -19,6 +19,20 @@ The application helps users manage their income and expenses, organize transacti
 
 ---
 
+## Screenshots
+
+### Login
+
+![Login](login.png)
+
+### Transactions
+
+![Transactions](transactions.png)
+
+### OCR Receipt
+
+![OCR Receipt](ocr.png)
+
 ## Technologies
 
 - C#
