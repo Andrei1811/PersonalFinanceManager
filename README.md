@@ -78,6 +78,17 @@ Automatic Form Completion
 
 ---
 
+## Project Highlights
+
+- Desktop application developed with C# and Windows Forms.
+- Object-Oriented Programming (OOP) architecture.
+- Local JSON data persistence using System.Text.Json.
+- Receipt OCR integration using Tesseract OCR.
+- Automatic extraction of receipt date and total using Regex.
+- CSV export functionality.
+- Clean and modular project structure based on Models, Services and Forms.
+
+
 ## Future Improvements
 
 - SQL Server or SQLite integration
