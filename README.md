@@ -1,8 +1,6 @@
 # Personal Finance Manager
 
-A desktop application for personal finance management developed in **C# (.NET 8)** using **Windows Forms**.
-
-The application helps users manage their income and expenses, organize transactions by category, scan receipts using OCR, and export financial reports to CSV format.
+A desktop personal finance management application built with **C# (.NET 8)** and **Windows Forms**. The application enables users to manage income and expenses, organize transactions by category, scan receipts using OCR technology, and export financial data to CSV format.
 
 ---
 
@@ -10,8 +8,8 @@ The application helps users manage their income and expenses, organize transacti
 
 - User authentication (Login & Register)
 - Income and expense management (CRUD)
-- Dynamic categories
-- Receipt OCR using Tesseract OCR
+- Dynamic transaction categories
+- Receipt OCR powered by Tesseract OCR
 - Local JSON data storage
 - CSV export
 - Transaction filtering and sorting
@@ -23,15 +21,17 @@ The application helps users manage their income and expenses, organize transacti
 
 ### Login
 
-![Login](login.png)
+![Login](screenshots/login.png)
 
 ### Transactions
 
-![Transactions](transactions.png)
+![Transactions](screenshots/transactions.png)
 
 ### OCR Receipt
 
-![OCR Receipt](ocr.png)
+![OCR Receipt](screenshots/ocr.png)
+
+---
 
 ## Technologies
 
@@ -54,6 +54,7 @@ PersonalFinanceManager
 ├── Services
 ├── Storage
 ├── tessdata
+├── screenshots
 └── Program.cs
 ```
 
@@ -68,11 +69,13 @@ PersonalFinanceManager
 
 ### Installation
 
+Clone the repository:
+
 ```bash
 git clone https://github.com/Andrei1811/PersonalFinanceManager.git
 ```
 
-Open the solution in Visual Studio, restore the NuGet packages and run the project.
+Open the solution in Visual Studio, restore the NuGet packages, and run the project.
 
 ---
 
@@ -85,7 +88,7 @@ Tesseract OCR
       ↓
 Text Extraction
       ↓
-Regex
+Regex Processing
       ↓
 Automatic Form Completion
 ```
@@ -94,20 +97,21 @@ Automatic Form Completion
 
 ## Project Highlights
 
-- Desktop application developed with C# and Windows Forms.
-- Object-Oriented Programming (OOP) architecture.
-- Local JSON data persistence using System.Text.Json.
-- Receipt OCR integration using Tesseract OCR.
-- Automatic extraction of receipt date and total using Regex.
-- CSV export functionality.
-- Clean and modular project structure based on Models, Services and Forms.
+- Built with C# (.NET 8) and Windows Forms
+- Object-Oriented Programming (OOP) architecture
+- Local JSON persistence using System.Text.Json
+- OCR receipt scanning powered by Tesseract OCR
+- Automatic receipt date and total extraction using Regex
+- CSV export for transaction history
+- Modular architecture based on Forms, Models, and Services
 
+---
 
 ## Future Improvements
 
 - SQL Server or SQLite integration
 - Password hashing
-- Charts and analytics
+- Charts and financial analytics
 - Cloud synchronization
 
 ---
